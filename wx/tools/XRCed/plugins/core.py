@@ -35,9 +35,10 @@ class Frame(component.Container):
         return component.Container.getChildObject(self, node, obj, index - indexOffset)
 
 c = Frame('wxFrame', ['frame','window','top_level'], 
-              ['pos', 'size', 'title', 'centered'],
+              ['pos', 'size', 'title', 'centered', 'icon'],
               image=images.TreeFrame.GetImage())
 c.isTopLevel = True
+c.setSpecial('icon', attribute.BitmapAttribute)
 c.addStyles('wxDEFAULT_FRAME_STYLE', 'wxDEFAULT_DIALOG_STYLE', 'wxCAPTION', 
             'wxSTAY_ON_TOP', 'wxSYSTEM_MENU',
             'wxRESIZE_BORDER', 'wxCLOSE_BOX',
@@ -69,9 +70,10 @@ class MDIParentFrame(component.Container):
         return obj.GetClientWindow().GetChildren()[index]
 
 c = MDIParentFrame('wxMDIParentFrame', ['mdi_parent_frame','top_level'], 
-              ['pos', 'size', 'title', 'centered'],
+              ['pos', 'size', 'title', 'centered', 'icon'],
               image=images.TreeFrame.GetImage())
 c.isTopLevel = True
+c.setSpecial('icon', attribute.BitmapAttribute)
 c.addStyles('wxDEFAULT_FRAME_STYLE', 'wxDEFAULT_DIALOG_STYLE', 'wxCAPTION', 
             'wxSTAY_ON_TOP', 'wxSYSTEM_MENU',
             'wxRESIZE_BORDER', 'wxCLOSE_BOX',
