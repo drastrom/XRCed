@@ -15,6 +15,7 @@ from . import view
 from .model import Model, MyDocument
 from .component import Manager
 from . import undo
+from .AttributePanel import AttributePanel
 
 # Presenter class linking model to view objects
 class _Presenter:
@@ -351,7 +352,7 @@ class _Presenter:
             for a,value in panel.GetValues():
                 if value:
                     try:
-                        if isinstance(panel, view.AttributePanel) and panel.comp:
+                        if isinstance(panel, AttributePanel) and panel.comp:
                             comp = panel.comp
                         else:
                             comp = self.comp
