@@ -6,7 +6,7 @@
 
 import os,sys
 from xml.dom import minidom
-from globals import *
+from .globals import *
 
 # Redefine writing to include encoding
 class MyDocument(minidom.Document):

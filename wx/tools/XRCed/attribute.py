@@ -11,8 +11,12 @@ This module contains some predefined classes which can be used to store and
 retrieve XML data into Python objects.
 '''
 
-import cPickle
-from model import Model
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+
+from .model import Model
 
 class Attribute:
     '''Base class, used for simple attributes, i.e. single attributes
@@ -219,7 +223,7 @@ class CDATAAttribute(Attribute):
         if value:
             elem = Model.dom.createElement(attribute)
             parentNode.appendChild(elem)
-            data = Model.dom.createCDATASection(cPickle.dumps(value))
+            data = Model.dom.createCDATASection(pickle.dumps(value))
             elem.appendChild(data)
     @staticmethod
     def get(node):
@@ -227,7 +231,7 @@ class CDATAAttribute(Attribute):
         try:
             n = node.childNodes[0]
             if n.nodeType == n.CDATA_SECTION_NODE:
-                return cPickle.loads(n.wholeText.encode())
+                return pickle.loads(n.wholeText.encode())
         except IndexError:
             pass
     

@@ -4,10 +4,11 @@
 # Created:      31.05.2007
 # RCS-ID:       $Id$
 
-from globals import *
-from model import Model
-from component import Manager, Component, Container
-import images
+import sys
+from .globals import *
+from .model import Model
+from .component import Manager, Component, Container
+from . import images
 
 class XMLTree(wx.TreeCtrl):
     def __init__(self, parent):
@@ -110,7 +111,10 @@ Allow to execute?''', 'Warning', wx.ICON_EXCLAMATION | wx.YES_NO)
     def ExecCode(self, code):
         logger.debug('executing comment pragma: \n%s', code)
         try:
-            exec code in globals(), self.locals
+            if sys.version[0] >= 3:
+                exec(code, globals(), self.locals)
+            else:
+                exec("exec code in globals(), self.locals")
         except:
             wx.LogError('exec error: "%s"' % code)
             logger.exception("execution of in-line comment failed")

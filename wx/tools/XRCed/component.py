@@ -23,12 +23,11 @@ import os,sys,bisect
 import wx
 try: set
 except: from sets import Set as set
-from globals import *
-from model import Model
-from attribute import *
-import params
-import view
-import images
+from .globals import *
+from .model import Model
+from .attribute import *
+from . import params
+from . import images
 
 DEFAULT_POS = (1000,1000)
 
@@ -272,6 +271,7 @@ class Component(object):
         @param res: C{wx.xrc.XmlResource} object with current test resource.
         @param name: XRC ID of tested object.
         '''
+        from . import view
         testWin = view.testWin
         if self.isTopLevel:
             # Top-level window creates frame itself

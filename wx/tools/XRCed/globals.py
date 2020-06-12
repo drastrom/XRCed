@@ -24,11 +24,11 @@ version = '0.2.1-0'
 # Minimal wxWidgets version
 MinWxVersion = (2,8,0)
 if wx.VERSION[:3] < MinWxVersion:
-    print '''\
+    print('''\
 ******************************* WARNING **************************************
   This version of XRCed may not work correctly on your version of wxWidgets.
   Please upgrade wxWidgets to %d.%d.%d or higher.
-******************************************************************************''' % MinWxVersion    
+******************************************************************************''' % MinWxVersion)
 
 # Can be changed to set other default encoding different
 #defaultEncoding = ''
@@ -118,9 +118,16 @@ else:
 g.basePath = os.path.abspath(g.basePath)
 
 # Data object used for clipboard
-class MyDataObject(wx.PyDataObjectSimple):
+dobase = wx.DataObjectSimple
+try:
+    if type(wx.PyDataObjectSimple) is not tuple:
+        dobase = wx.PyDataObjectSimple
+except AttributeError:
+    pass
+
+class MyDataObject(dobase):
     def __init__(self, data=''):
-        wx.PyDataObjectSimple.__init__(self, wx.CustomDataFormat('XRCed_DND'))
+        dobase.__init__(self, wx.CustomDataFormat('XRCed_DND'))
         self.data = data
     def GetDataSize(self):
         return len(self.data)

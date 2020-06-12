@@ -5,15 +5,15 @@
 # RCS-ID:       $Id$
 
 import os
-from XMLTree import XMLTree
-from XMLTreeMenu import XMLTreeMenu
-from AttributePanel import Panel, AttributePanel
-from TestWin import TestWindow
-from tools import *
-import images
+import wx
+from wx import xrc
+from .globals import *
+from .XMLTree import XMLTree
+from .XMLTreeMenu import XMLTreeMenu
+from . import images
 if wx.Platform == '__WXMAC__':
     # Substitute higher-res icons for Mac
-    import images_32x32
+    from . import images_32x32
     images.__dict__.update(images_32x32.__dict__)
 import wx.aui
 import wx.html
@@ -23,6 +23,7 @@ def create_view():
     Create all necessary view objects. Some of them are set as module
     global variables for convenience.
     '''
+    from .TestWin import TestWindow
 
     # Load resources
     res = xrc.EmptyXmlResource()
@@ -39,6 +40,7 @@ def create_view():
     testWin = TestWindow()
 
 def create_tools():
+    from .tools import ToolPanel
     if g.useAUI:
         g.toolPanel = ToolPanel(frame)
         frame.mgr.AddPane(g.toolPanel, wx.aui.AuiPaneInfo().Name('tools').Caption("Tools").
@@ -72,6 +74,7 @@ def create_tools():
 
 class Frame(wx.Frame):
     def __init__(self, pos, size):
+        from .AttributePanel import Panel
         wx.Frame.__init__(self, None, -1, 'XRCed', pos, size)
         bar = self.CreateStatusBar(2)
         bar.SetStatusWidths([-1, 40])

@@ -4,10 +4,10 @@
 # Created:      01.12.2002
 # RCS-ID:       $Id$
 
-from globals import *
-import view
-from component import Manager
-from model import Model
+from .globals import *
+from . import view
+from .component import Manager
+from .model import Model
 
 undo_depth = 10                 # max number of undo remembered
 

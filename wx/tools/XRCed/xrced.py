@@ -19,14 +19,14 @@ options:
 
 import os
 from optparse import OptionParser
-from globals import *
-import params
-from presenter import Presenter
-from listener import Listener
-from component import Manager
-import view
-import undo
-import plugin
+from .globals import *
+from . import params
+from .presenter import Presenter
+from .listener import Listener
+from .component import Manager
+from . import view
+from . import undo
+from . import plugin
 
 # for helping to attach to the process with gdb...
 #print "%s\nPID: %d\n" % (wx.version(), os.getpid()); #raw_input("Press Enter...")
@@ -87,7 +87,7 @@ Please upgrade wxWidgets to %d.%d.%d or higher.''' % MinWxVersion)
             set_verbose(True)
         if options.meta:
             g.useMeta = True
-            import meta
+            from . import meta
             Manager.register(meta.Component)
             Manager.setMenu(meta.Component, 'TOP_LEVEL', 'component', 'component plugin')
             

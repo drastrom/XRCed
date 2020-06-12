@@ -4,8 +4,8 @@
 # Created:      25.07.2007
 # RCS-ID:       $Id$
 
-from globals import *
-from presenter import Presenter
+from .globals import *
+from .presenter import Presenter
 
 class PythonOptions(wx.Dialog):
 

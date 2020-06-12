@@ -4,10 +4,10 @@
 # Created:      13.07.2007
 # RCS-ID:       $Id: view.py 47356 2007-07-12 01:00:57Z ROL $
 
-from globals import *
+from .globals import *
 import wx
-import view
-from component import Manager
+from . import view
+from .component import Manager
 
 def getAllChildren(w):
     '''Get all children recursively.'''

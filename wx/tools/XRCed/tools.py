@@ -4,11 +4,11 @@
 # Created:      19.03.2003
 # RCS-ID:       $Id$
 
-from globals import *
-from component import Manager, DEFAULT_POS
-import view
-import images
-import wx.lib.foldpanelbar as fpb
+from .globals import *
+from .component import Manager, DEFAULT_POS
+from . import view
+from . import images
+import wx.lib.agw.foldpanelbar as fpb
 
 #if wx.Platform in ['__WXMAC__', '__WXMSW__']:
     # Mac and Win are better off with generic
@@ -187,7 +187,7 @@ class ToolPanel(wx.PyPanel):
 
     # Process key events
     def OnKeyDown(self, evt):
-        print evt.GetEventObject(), evt.GetKeyCode()
+        print(evt.GetEventObject(), evt.GetKeyCode())
         evt.Skip()
         return
         if evt.GetKeyCode() == wx.WXK_CONTROL:

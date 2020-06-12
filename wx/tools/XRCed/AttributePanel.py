@@ -7,11 +7,11 @@
 import string
 import wx
 import wx.lib.buttons as buttons
-from globals import *
-import params
-import component
-import undo
-import images
+from .globals import *
+from . import params
+from . import component
+from . import undo
+from . import images
 
 
 labelSize = (100,-1)

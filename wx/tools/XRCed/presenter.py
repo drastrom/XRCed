@@ -6,12 +6,15 @@
 
 import os,tempfile,shutil
 from xml.parsers import expat
-import cPickle
-from globals import *
-import view
-from model import Model, MyDocument
-from component import Manager
-import undo
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+from .globals import *
+from . import view
+from .model import Model, MyDocument
+from .component import Manager
+from . import undo
 
 # Presenter class linking model to view objects
 class _Presenter:
@@ -434,7 +437,7 @@ class _Presenter:
                 # Non-element nodes are normally comments
                 data = wx.CustomDataObject('XRCED_node')
                 s = node.data
-            data.SetData(cPickle.dumps(s))
+            data.SetData(pickle.dumps(s))
             wx.TheClipboard.SetData(data)
             wx.TheClipboard.Close()
         else:
@@ -476,7 +479,7 @@ class _Presenter:
             return
 
         # XML representation of element or node value string
-        data = cPickle.loads(data.GetData()) 
+        data = pickle.loads(data.GetData()) 
         implicit = None
         if success:
             if type(data) is list:

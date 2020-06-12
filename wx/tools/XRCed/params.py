@@ -11,8 +11,11 @@ blocks.
 
 import string
 import os
-import wx.combo
-from globals import *
+try:
+    import wx.combo
+except ImportError:
+    import wx
+from .globals import *
 
 WARenameDict = {'fg': 'foreground', 'bg': 'background'}
 
@@ -95,7 +98,10 @@ class ParamBinaryOr(PPanel):
         self.freeze = False
         sizer = wx.BoxSizer()
         popup = CheckListBoxComboPopup(self.values)
-        self.combo = wx.combo.ComboCtrl(self, size=(220,-1))
+        try:
+            self.combo = wx.combo.ComboCtrl(self, size=(220,-1))
+        except AttributeError:
+            self.combo = wx.ComboCtrl(self, size=(220,-1))
         self.combo.SetPopupControl(popup)
         if wx.Platform == '__WXMAC__':
             sizer.Add(self.combo, 1, wx.ALL, 0)
@@ -1057,12 +1063,17 @@ class StylePanel(wx.Panel):
 
 #############################################################################
 
-class CheckListBoxComboPopup(wx.CheckListBox, wx.combo.ComboPopup):
+try:
+    cbpobase = wx.combo.ComboPopup
+except AttributeError:
+    cbpobase = wx.ComboPopup
+
+class CheckListBoxComboPopup(wx.CheckListBox, cbpobase):
         
     def __init__(self, values):
         self.values = values
         self.PostCreate(wx.PreCheckListBox())
-        wx.combo.ComboPopup.__init__(self)
+        cbpobase.__init__(self)
         
     def Create(self, parent):
         wx.CheckListBox.Create(self, parent)
@@ -1092,7 +1103,7 @@ class CheckListBoxComboPopup(wx.CheckListBox, wx.combo.ComboPopup):
                     logger.warning('unknown flag: %s: ignored.', i)
                     self.ignored.append(i)
 
-        wx.combo.ComboPopup.OnPopup(self)
+        cbpobase.OnPopup(self)
 
     def OnDismiss(self):
         combo = self.GetCombo()
@@ -1107,7 +1118,7 @@ class CheckListBoxComboPopup(wx.CheckListBox, wx.combo.ComboPopup):
             combo.SetValue(strValue)
             Presenter.setApplied(False)
 
-        wx.combo.ComboPopup.OnDismiss(self)
+        cbpobase.OnDismiss(self)
 
     if wx.Platform in ['__WXMAC__', '__WXMSW__']:
         def OnMotion(self, evt):

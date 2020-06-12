@@ -6,13 +6,13 @@
 
 import wx
 import os,sys,shutil,tempfile
-from globals import *
-from presenter import Presenter
-from component import Manager
-from model import Model
-import view
-import undo
-from generate import PythonOptions
+from .globals import *
+from .presenter import Presenter
+from .component import Manager
+from .model import Model
+from . import view
+from . import undo
+from .generate import PythonOptions
 
 class _Listener:
     '''
@@ -614,9 +614,9 @@ Homepage: http://xrced.sourceforge.net\
     def OnDebugCMD(self, evt):
         while 1:
             try:
-                exec raw_input('C:\> ')
+                exec (raw_input('C:\> '))
             except EOFError:
-                print '^D'
+                print('^D')
                 break
             except:
                 import traceback
@@ -624,7 +624,7 @@ Homepage: http://xrced.sourceforge.net\
                 tblist =traceback.extract_tb(tb)[1:]
                 msg =' '.join(traceback.format_exception_only(etype, value)
                         +traceback.format_list(tblist))
-                print msg
+                print(msg)
 
     def OnEmbedPanel(self, evt):
         self.frame.EmbedUnembed(evt.IsChecked())

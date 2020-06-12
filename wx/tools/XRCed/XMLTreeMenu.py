@@ -5,8 +5,8 @@
 # RCS-ID:       $Id$
 
 import wx
-from globals import ID
-from component import Manager
+from .globals import ID
+from .component import Manager
 
 class XMLTreeMenu(wx.Menu):
     '''dynamic pulldown menu for XMLTree'''
