@@ -113,11 +113,11 @@ def create_component(node):
     panel = comp.getAttribute(node, 'panel')
     if panel:
         try:
-            pos = map(int, comp.getAttribute(node, 'pos').split(','))
+            pos = list(map(int, comp.getAttribute(node, 'pos').split(',')))
         except:
             pos = component.DEFAULT_POS
         try:
-            span = map(int, comp.getAttribute(node, 'span').split(','))
+            span = list(map(int, comp.getAttribute(node, 'span').split(',')))
         except:
             span = (1, 1)
         Manager.setTool(c, panel, pos=pos, span=span)

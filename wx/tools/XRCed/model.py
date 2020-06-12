@@ -132,7 +132,7 @@ class _Model:
         return minidom.parseString(data).childNodes[0]
 
     def setTestElem(self, elem):
-        oldTestElem = Model.testElem
+        oldTestElem = self.testElem
         self.mainNode.replaceChild(elem, oldTestElem)
         self.testElem = elem
         oldTestElem.unlink()

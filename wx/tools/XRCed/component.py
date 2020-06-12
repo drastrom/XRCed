@@ -222,12 +222,25 @@ class Component(object):
 
     # Order components having same index by group and klass
     def __cmp__(self, other):
-        if self.groups < other.groups: return -1
-        elif self.groups == other.groups: 
-            if self.klass < other.klass: return -1
-            elif self.klass == other.klass: return 0
-            else: return 1
-        else: return 1
+        return cmp((self.groups, self.klass), (other.groups, other.klass))
+
+    def __eq__(self, other):
+        return (self.groups, self.klass) == (other.groups, other.klass)
+
+    def __ne__(self, other):
+        return (self.groups, self.klass) != (other.groups, other.klass)
+
+    def __lt__(self, other):
+        return (self.groups, self.klass) < (other.groups, other.klass)
+
+    def __le__(self, other):
+        return (self.groups, self.klass) <= (other.groups, other.klass)
+
+    def __gt__(self, other):
+        return (self.groups, self.klass) > (other.groups, other.klass)
+
+    def __ge__(self, other):
+        return (self.groups, self.klass) >= (other.groups, other.klass)
 
     def __repr__(self):
         return "Component('%s', %s)" % (self.klass, self.attributes)

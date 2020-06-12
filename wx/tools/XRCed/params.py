@@ -23,9 +23,9 @@ def InitParams(panel):
     '''Set pixel common size based on parent window.'''
 
     global Presenter
-    from presenter import Presenter
+    from .presenter import Presenter
     global Listener
-    from listener import Listener
+    from .listener import Listener
 
     dc = wx.ClientDC(panel)
     global textH, textB
@@ -1049,7 +1049,7 @@ class StylePanel(wx.Panel):
         return [(self.tag, '|'.join(checked))]
 
     def SetValues(self, values):
-        styles = map(string.strip, values[0][1].split('|'))
+        styles = set(map(string.strip, values[0][1].split('|')))
         for s,check in self.controls:
             check.SetValue(s in styles or (self.equivStyles.has_key(s) and self.equivStyles[s] in styles))
 
@@ -1089,7 +1089,7 @@ class CheckListBoxComboPopup(wx.CheckListBox, cbpobase):
 
     def OnPopup(self):
         combo = self.GetCombo()
-        value = map(string.strip, combo.GetValue().split('|'))
+        value = list(map(string.strip, combo.GetValue().split('|')))
         if value == ['']: value = []
         self.ignored = []
         for i in value:

@@ -79,7 +79,10 @@ class Frame(wx.Frame):
         bar = self.CreateStatusBar(2)
         bar.SetStatusWidths([-1, 40])
         if wx.Platform != '__WXMAC__':
-            self.icns = wx.IconBundleFromIcon(images.Icon.GetIcon())
+            try:
+                self.icns = wx.IconBundleFromIcon(images.Icon.GetIcon())
+            except AttributeError:
+                self.icns = wx.IconBundle(images.Icon.GetIcon())
             self.SetIcons(self.icns)
 
         self.InitMenuBar()

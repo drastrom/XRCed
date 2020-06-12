@@ -162,9 +162,8 @@ class _Listener:
         # Tool panel events
         toolPanel = g.toolPanel
         toolPanel.tp.Bind(wx.EVT_TOOLBOOK_PAGE_CHANGED, self.OnToolPanelPageChanged)
-        wx.EVT_COMMAND_RANGE(toolPanel.tp, Manager.firstId, Manager.lastId,
-                             wx.wxEVT_COMMAND_BUTTON_CLICKED,
-                             self.OnComponentTool)
+        toolPanel.tp.Bind(wx.EVT_BUTTON, self.OnComponentTool,
+                          id=Manager.firstId, id2=Manager.lastId)
         if toolFrame:
             toolFrame.Bind(wx.EVT_CLOSE, self.OnCloseToolFrame)
 
@@ -801,7 +800,8 @@ Homepage: http://xrced.sourceforge.net\
     # Expand/collapse subtree
     def OnExpand(self, evt):
         if self.tree.GetSelection(): 
-            map(self.tree.ExpandAllChildren, self.tree.GetSelections())
+            for i in self.tree.GetSelections():
+                self.tree.ExpandAllChildren(i)
         else: 
             self.tree.ExpandAll()
 
@@ -809,7 +809,8 @@ Homepage: http://xrced.sourceforge.net\
         # Prevent multiple calls to setData
         self.tree.Unbind(wx.EVT_TREE_ITEM_COLLAPSED)
         if self.tree.GetSelection(): 
-            map(self.tree.CollapseAllChildren, self.tree.GetSelections())
+            for i in self.tree.GetSelections():
+                self.tree.CollapseAllChildren(i)
         else: 
             self.tree.CollapseAll()
         self.tree.Bind(wx.EVT_TREE_ITEM_COLLAPSED, self.OnTreeItemCollapsed)

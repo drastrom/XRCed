@@ -43,7 +43,7 @@ class ScrolledPage(wx.ScrolledWindow):
 class ToggleButton(buttons.GenBitmapToggleButton):
     def GetBackgroundBrush(self, dc):
         colBg = self.GetBackgroundColour()
-        brush = wx.Brush(colBg, wx.SOLID)
+        brush = wx.Brush(colBg)
         if self.style & wx.BORDER_NONE:
             myAttr = self.GetDefaultAttributes()
             parAttr = self.GetParent().GetDefaultAttributes()
@@ -51,13 +51,14 @@ class ToggleButton(buttons.GenBitmapToggleButton):
             parDef = self.GetParent().GetBackgroundColour() == parAttr.colBg
             if myDef and parDef:
                 if wx.Platform == "__WXMAC__":
-                    brush.MacSetTheme(1) # 1 == kThemeBrushDialogBackgroundActive
+                    c = wx.MacThemeColour(1) # 1 == kThemeBrushDialogBackgroundActive
+                    brush = wx.Brush(c)
                 elif wx.Platform == "__WXMSW__":
-                    if self.DoEraseBackground(dc):
+                    if hasattr(self, 'DoEraseBackground') and self.DoEraseBackground(dc):
                         brush = None
             elif myDef and not parDef:
                 colBg = self.GetParent().GetBackgroundColour()
-                brush = wx.Brush(colBg, wx.SOLID)
+                brush = wx.Brush(colBg)
         return brush
 
 class Panel(wx.Panel):
@@ -131,7 +132,8 @@ class Panel(wx.Panel):
 
         oldLabel = self.nb.GetPageText(self.nb.GetSelection())
         self.nb.SetSelection(0)
-        map(self.nb.RemovePage, range(self.nb.GetPageCount()-1, 0, -1))
+        for i in range(self.nb.GetPageCount()-1, 0, -1):
+            self.nb.RemovePage(i)
 
         # Don't freeze while removing the pages, but do it
         # after the removes instead.  See
@@ -246,7 +248,8 @@ class Panel(wx.Panel):
     def Clear(self):
         self.comp = None
         self.nb.SetSelection(0)
-        map(self.nb.RemovePage, range(self.nb.GetPageCount()-1, 0, -1))
+        for i in range(self.nb.GetPageCount()-1, 0, -1):
+            self.nb.RemovePage(i)
         self.pageA.Reset()
         self.undo = None
 
