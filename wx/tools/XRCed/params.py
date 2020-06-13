@@ -9,7 +9,6 @@ Visual C{Param*} classes for populating C{AtrtibutePanel} with attribute editing
 blocks. 
 '''
 
-import string
 import os
 import wx
 from .globals import *
@@ -68,8 +67,11 @@ def InitParams(panel):
 class PPanel(wx.Panel):
     '''Abstract base class creating an empty C{wx.Panel}.'''
     isCheck = False
-    def __init__(self, parent, name):
-        wx.Panel.__init__(self, parent, -1, name=name)
+    def __init__(self, parent=None, name=None):
+        if parent is not None:
+            wx.Panel.__init__(self, parent, -1, name=name)
+        else:
+            wx.Panel.__init__(self)
         self.name = name
     def Enable(self, value):
         self.enabled = value
@@ -838,9 +840,8 @@ class ParamOrientation(RadioBox):
 
 class ParamBitmap(PPanel):
     def __init__(self, parent, name):
-        pre = wx.PrePanel()
-        g.res.LoadOnPanel(pre, parent, 'PANEL_BITMAP')
-        self.PostCreate(pre)
+        PPanel.__init__(self, name=name)
+        g.res.LoadPanel(self, parent, 'PANEL_BITMAP')
         self.modified = False
         self.radio_std = xrc.XRCCTRL(self, 'RADIO_STD')
         self.radio_file = xrc.XRCCTRL(self, 'RADIO_FILE')
@@ -1043,9 +1044,9 @@ class StylePanel(wx.Panel):
         return [(self.tag, '|'.join(checked))]
 
     def SetValues(self, values):
-        styles = set(map(string.strip, values[0][1].split('|')))
+        styles = set(map(str.strip, values[0][1].split('|')))
         for s,check in self.controls:
-            check.SetValue(s in styles or (self.equivStyles.has_key(s) and self.equivStyles[s] in styles))
+            check.SetValue(s in styles or (s in self.equivStyles and self.equivStyles[s] in styles))
 
     def OnCheck(self, evt):
         Presenter.setApplied(False)
@@ -1078,7 +1079,7 @@ class CheckListBoxComboPopup(wx.ComboPopup):
 
     def OnPopup(self):
         combo = self.GetComboCtrl()
-        value = list(map(string.strip, combo.GetValue().split('|')))
+        value = list(map(str.strip, combo.GetValue().split('|')))
         if value == ['']: value = []
         self.ignored = []
         for i in value:
@@ -1086,7 +1087,7 @@ class CheckListBoxComboPopup(wx.ComboPopup):
                 self.control.Check(self.values.index(i))
             except ValueError:
                 # Try to find equal
-                if self.equal.has_key(i):
+                if i in self.equal:
                     self.control.Check(self.values.index(self.equal[i]))
                 else:
                     logger.warning('unknown flag: %s: ignored.', i)
