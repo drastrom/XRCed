@@ -15,6 +15,7 @@ if wx.Platform == '__WXMAC__':
     # Substitute higher-res icons for Mac
     from . import images_32x32
     images.__dict__.update(images_32x32.__dict__)
+import wx.adv
 import wx.aui
 import wx.html
 
@@ -455,11 +456,11 @@ class ScrolledMessageDialog(wx.Dialog):
 
 ################################################################################
 
-class PrefsDialog(wx.Dialog): #(wx.PropertySheetDialog): !!! not wrapper yed - wrap by hand
+class PrefsDialog(wx.adv.PropertySheetDialog): #(wx.PropertySheetDialog): !!! not wrapper yed - wrap by hand
 
     def __init__(self, parent):
-        pre = g.res.LoadObject(parent, 'DIALOG_PREFS', 'wxPropertySheetDialog')
-        self.PostCreate(pre)
+        wx.adv.PropertySheetDialog.__init__(self)
+        g.res.LoadObject(self, parent, 'DIALOG_PREFS', 'wxPropertySheetDialog')
         
         self.Fit()
         

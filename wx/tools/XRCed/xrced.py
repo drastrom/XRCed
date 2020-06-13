@@ -59,6 +59,9 @@ class App(AppBase):
         if USE_INSPECTOR:
             self.Init()
 
+        if not AppBase.OnInit(self):
+            return False
+
         # Check version
         if wx.VERSION[:3] < MinWxVersion:
             wx.LogWarning('''\
@@ -137,6 +140,7 @@ Please upgrade wxWidgets to %d.%d.%d or higher.''' % MinWxVersion)
 
     def OnExit(self):
         self.WriteConfig()
+        return AppBase.OnExit(self)
 
     def ReadConfig(self):
         # Settings
