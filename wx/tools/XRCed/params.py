@@ -11,10 +11,7 @@ blocks.
 
 import string
 import os
-try:
-    import wx.combo
-except ImportError:
-    import wx
+import wx
 from .globals import *
 
 WARenameDict = {'fg': 'foreground', 'bg': 'background'}
@@ -98,10 +95,7 @@ class ParamBinaryOr(PPanel):
         self.freeze = False
         sizer = wx.BoxSizer()
         popup = CheckListBoxComboPopup(self.values)
-        try:
-            self.combo = wx.combo.ComboCtrl(self, size=(220,-1))
-        except AttributeError:
-            self.combo = wx.ComboCtrl(self, size=(220,-1))
+        self.combo = wx.ComboCtrl(self, size=(220,-1))
         self.combo.SetPopupControl(popup)
         if wx.Platform == '__WXMAC__':
             sizer.Add(self.combo, 1, wx.ALL, 0)
@@ -1063,53 +1057,48 @@ class StylePanel(wx.Panel):
 
 #############################################################################
 
-try:
-    cbpobase = wx.combo.ComboPopup
-except AttributeError:
-    cbpobase = wx.ComboPopup
-
-class CheckListBoxComboPopup(wx.CheckListBox, cbpobase):
+class CheckListBoxComboPopup(wx.ComboPopup):
         
     def __init__(self, values):
         self.values = values
-        self.PostCreate(wx.PreCheckListBox())
-        cbpobase.__init__(self)
+        self.control = wx.CheckListBox()
+        wx.ComboPopup.__init__(self)
         
     def Create(self, parent):
-        wx.CheckListBox.Create(self, parent)
-        self.InsertItems(self.values, 0)
+        self.control.Create(parent)
+        self.control.InsertItems(self.values, 0)
         # Workaround for mac/windows - see ticket #14282
         if wx.Platform in ['__WXMAC__', '__WXMSW__']:
-            self.Bind(wx.EVT_MOTION, self.OnMotion)
-            self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
+            self.control.Bind(wx.EVT_MOTION, self.OnMotion)
+            self.control.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         return True
 
     def GetControl(self):
-        return self
+        return self.control
 
     def OnPopup(self):
-        combo = self.GetCombo()
+        combo = self.GetComboCtrl()
         value = list(map(string.strip, combo.GetValue().split('|')))
         if value == ['']: value = []
         self.ignored = []
         for i in value:
             try:
-                self.Check(self.values.index(i))
+                self.control.Check(self.values.index(i))
             except ValueError:
                 # Try to find equal
                 if self.equal.has_key(i):
-                    self.Check(self.values.index(self.equal[i]))
+                    self.control.Check(self.values.index(self.equal[i]))
                 else:
                     logger.warning('unknown flag: %s: ignored.', i)
                     self.ignored.append(i)
 
-        cbpobase.OnPopup(self)
+        wx.ComboPopup.OnPopup(self)
 
     def OnDismiss(self):
-        combo = self.GetCombo()
+        combo = self.GetComboCtrl()
         value = []
-        for i in range(self.GetCount()):
-            if self.IsChecked(i):
+        for i in range(self.control.GetCount()):
+            if self.control.IsChecked(i):
                 value.append(self.values[i])
         # Add ignored flags
         value.extend(self.ignored)
@@ -1118,15 +1107,15 @@ class CheckListBoxComboPopup(wx.CheckListBox, cbpobase):
             combo.SetValue(strValue)
             Presenter.setApplied(False)
 
-        cbpobase.OnDismiss(self)
+        wx.ComboPopup.OnDismiss(self)
 
     if wx.Platform in ['__WXMAC__', '__WXMSW__']:
         def OnMotion(self, evt):
-            item  = self.HitTest(evt.GetPosition())
+            item  = self.control.HitTest(evt.GetPosition())
             if item >= 0:
-                self.Select(item)
+                self.control.Select(item)
                 self.curitem = item
     
         def OnLeftDown(self, evt):
             self.value = self.curitem
-            self.Check(self.value, not self.IsChecked(self.value))
+            self.control.Check(self.value, not self.control.IsChecked(self.value))
