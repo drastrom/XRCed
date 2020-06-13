@@ -226,7 +226,7 @@ class _Listener:
         exts = 'XRC files (*.xrc)|*.xrc'
         if g.useMeta: exts += '|CRX files (*.crx)|*.crx'
         dlg = wx.FileDialog(self.frame, 'Open', os.path.dirname(Presenter.path),
-                            '', exts, wx.OPEN | wx.CHANGE_DIR)
+                            '', exts, wx.FD_OPEN | wx.FD_CHANGE_DIR)
         if dlg.ShowModal() == wx.ID_OK:
             if self.testWin.IsShown(): self.testWin.Destroy()
             # Clear old undo data
@@ -267,11 +267,14 @@ class _Listener:
             exts = 'XRC files (*.xrc)|*.xrc'
             if g.useMeta: exts += '|CRX files (*.crx)|*.crx'
             dlg = wx.FileDialog(self.frame, 'Save As', dirname, '', exts,
-                               wx.SAVE | wx.OVERWRITE_PROMPT | wx.CHANGE_DIR)
+                               wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT | wx.FD_CHANGE_DIR)
             if dlg.ShowModal() == wx.ID_OK:
                 path = dlg.GetPath()
-                if isinstance(path, unicode):
-                    path = path.encode(sys.getfilesystemencoding())
+                try:
+                    if isinstance(path, unicode):
+                        path = path.encode(sys.getfilesystemencoding())
+                except NameError:
+                    pass
                 if not os.path.splitext(path)[1]:
                     if g.useMeta:
                         path += '.crx'

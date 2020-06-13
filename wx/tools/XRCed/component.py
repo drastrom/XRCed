@@ -289,9 +289,9 @@ class Component(object):
         if self.isTopLevel:
             # Top-level window creates frame itself
             frame = None
-            object = res.LoadObject(view.frame, STD_NAME, self.klass)
-            object.Fit()
-            testWin.size = object.GetSize()
+            obj = res.LoadObject(view.frame, STD_NAME, self.klass)
+            obj.Fit()
+            testWin.size = obj.GetSize()
         else:
             # Create MiniFrame to hold selected subtree
             frame = testWin.frame
@@ -299,16 +299,16 @@ class Component(object):
                 frame = wx.MiniFrame(view.frame, -1, '%s: %s' % (self.klass, name), name=STD_NAME,
                                      style=wx.CAPTION|wx.CLOSE_BOX|wx.RESIZE_BORDER)
                 frame.panel = wx.Panel(frame)
-            object = res.LoadObject(frame.panel, STD_NAME, self.klass)
-            if not object or not isinstance(object, wx.Window): 
+            obj = res.LoadObject(frame.panel, STD_NAME, self.klass)
+            if not obj or not isinstance(object, wx.Window): 
                 raise TestWinError
-            object.SetPosition((10,10))
+            obj.SetPosition((10,10))
             if g.conf.fitTestWin: 
                 object.Fit()
                 if frame:
-                    frame.SetClientSize(object.GetSize()+(20,20))
+                    frame.SetClientSize(obj.GetSize()+(20,20))
                     testWin.size = frame.GetSize()
-        return frame, object
+        return frame, obj
 
     def getRect(self, obj):
         '''Return bounding box coordinates for C{obj}.'''
@@ -768,13 +768,13 @@ class _ComponentManager:
             TRACE('registering Xml handler %s', h)
             if g._CFuncPtr and isinstance(h, g._CFuncPtr):
                 try:
-                    apply(h, ())
+                    h()
                 except:
                     logger.exception('error calling DL func "%s"', h)
                     wx.LogError('error calling DL func "%s"' % h)
             else:               # assume a python class handler
                 try:
-                    res.AddHandler(apply(h, ()))
+                    res.AddHandler(h())
                 except:
                     logger.exception('error adding XmlHandler "%s"', h)
                     wx.LogError('error adding XmlHandler "%s"' % h)

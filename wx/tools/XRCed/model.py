@@ -157,7 +157,7 @@ class MemoryFile:
     '''Memory file proxy for python-like file object.'''
     def __init__(self, name):
         self.name = name
-        self.buffer = ''
+        self.buffer = b''
     def write(self, data):
         if Model.dom.encoding:
             encoding = Model.dom.encoding
@@ -169,7 +169,7 @@ class MemoryFile:
             self.buffer += data.encode(encoding, 'xmlcharrefreplace')
             
     def close(self):
-        wx.MemoryFSHandler.AddFile(self.name, self.buffer)
+        wx.MemoryFSHandler.AddFile(self.name, memoryview(self.buffer))
 
 # Imitation of FindResource/DoFindResource from xmlres.cpp
 def DoFindResource(parent, name, classname, recursive):

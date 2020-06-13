@@ -371,7 +371,7 @@ class Frame(wx.Frame):
             conf.sashPos = self.GetClientSize()[0]
             panelWidth = panel.GetSize()[0] # client size
             panel.Reparent(self.splitter)
-            self.miniFrame.GetSizer().Remove(panel)
+            self.miniFrame.GetSizer().Detach(panel)
             # Widen
             conf.size.width += panelWidth
             self.SetSize(conf.size)
