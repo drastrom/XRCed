@@ -34,7 +34,7 @@ def InitParams(panel):
 
     # make a custom bitmap showing "..."
     bw, bh = 14, 16
-    bmp = wx.EmptyBitmap(bw,bh)
+    bmp = wx.Bitmap(bw,bh)
     dc = wx.MemoryDC(bmp)
     
     # clear to a specific background colour
@@ -452,10 +452,10 @@ class ContentDialog(wx.Dialog):
         wx.EVT_BUTTON(self, self.ID_BUTTON_APPEND, self.OnButtonAppend)
         wx.EVT_BUTTON(self, self.ID_BUTTON_EDIT, self.OnButtonEdit)
         wx.EVT_BUTTON(self, self.ID_BUTTON_REMOVE, self.OnButtonRemove)
-        wx.EVT_UPDATE_UI(self, self.ID_BUTTON_UP, self.OnUpdateUI)
-        wx.EVT_UPDATE_UI(self, self.ID_BUTTON_DOWN, self.OnUpdateUI)
-        wx.EVT_UPDATE_UI(self, self.ID_BUTTON_REMOVE, self.OnUpdateUI)
-        wx.EVT_UPDATE_UI(self, self.ID_BUTTON_EDIT, self.OnUpdateUI)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=self.ID_BUTTON_UP)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=self.ID_BUTTON_DOWN)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=self.ID_BUTTON_REMOVE)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=self.ID_BUTTON_EDIT)
     def OnButtonUp(self, evt):
         i = self.list.GetSelection()
         str = self.list.GetString(i)
@@ -511,10 +511,10 @@ class ContentCheckListDialog(ContentDialog):
         wx.EVT_BUTTON(self, self.ID_BUTTON_APPEND, self.OnButtonAppend)
         wx.EVT_BUTTON(self, self.ID_BUTTON_EDIT, self.OnButtonEdit)
         wx.EVT_BUTTON(self, self.ID_BUTTON_REMOVE, self.OnButtonRemove)
-        wx.EVT_UPDATE_UI(self, self.ID_BUTTON_UP, self.OnUpdateUI)
-        wx.EVT_UPDATE_UI(self, self.ID_BUTTON_DOWN, self.OnUpdateUI)
-        wx.EVT_UPDATE_UI(self, self.ID_BUTTON_REMOVE, self.OnUpdateUI)
-        wx.EVT_UPDATE_UI(self, self.ID_BUTTON_EDIT, self.OnUpdateUI)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=self.ID_BUTTON_UP)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=self.ID_BUTTON_DOWN)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=self.ID_BUTTON_REMOVE)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=self.ID_BUTTON_EDIT)
     def OnButtonUp(self, evt):
         i = self.list.GetSelection()
         str, ch = self.list.GetString(i), self.list.IsChecked(i)
@@ -559,10 +559,10 @@ class ContentHelpListDialog(wx.Dialog):
         wx.EVT_BUTTON(self, self.ID_BUTTON_APPEND, self.OnButtonAppend)
         wx.EVT_BUTTON(self, self.ID_BUTTON_EDIT, self.OnButtonEdit)
         wx.EVT_BUTTON(self, self.ID_BUTTON_REMOVE, self.OnButtonRemove)
-        wx.EVT_UPDATE_UI(self, self.ID_BUTTON_UP, self.OnUpdateUI)
-        wx.EVT_UPDATE_UI(self, self.ID_BUTTON_DOWN, self.OnUpdateUI)
-        wx.EVT_UPDATE_UI(self, self.ID_BUTTON_REMOVE, self.OnUpdateUI)
-        wx.EVT_UPDATE_UI(self, self.ID_BUTTON_EDIT, self.OnUpdateUI)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=self.ID_BUTTON_UP)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=self.ID_BUTTON_DOWN)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=self.ID_BUTTON_REMOVE)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=self.ID_BUTTON_EDIT)
     def OnButtonUp(self, evt):
         i = self.list.GetNextItem(-1, state = wx.LIST_STATE_SELECTED)
         v, t, h  = self.list.GetItem(i, 0), self.list.GetItem(i, 1), self.list.GetItem(i, 2)
@@ -713,7 +713,7 @@ class IntListDialog(wx.Dialog):
         self.ID_BUTTON_REMOVE = xrc.XRCID('BUTTON_REMOVE')
         wx.EVT_BUTTON(self, self.ID_BUTTON_REMOVE, self.OnButtonRemove)
         wx.EVT_BUTTON(self, xrc.XRCID('BUTTON_CLEAR'), self.OnButtonClear)
-        wx.EVT_UPDATE_UI(self, self.ID_BUTTON_REMOVE, self.OnUpdateUI)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=self.ID_BUTTON_REMOVE)
     def OnButtonAdd(self, evt):
         # Check that it's unique
         try:

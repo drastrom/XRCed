@@ -25,7 +25,7 @@ def WTF(win, filename):
         x0,y0 = win.ClientToScreen((0,0))
         h += y0 - y + 5
         w += 10
-        bitmap = wx.EmptyBitmap(w, h, -1)
+        bitmap = wx.Bitmap(w, h, -1)
         memory.SelectObject(bitmap)
         memory.Blit(0, 0, w, h, context, x, y)
         memory.Destroy()
@@ -53,7 +53,7 @@ def WTFC(win, filename, obj):
         h = obj.GetSize()[1]
 #        h += y0 - y + 5
 #        w += 10
-        bitmap = wx.EmptyBitmap(128, h, -1)
+        bitmap = wx.Bitmap(128, h, -1)
         memory.SelectObject(bitmap)
         memory.Blit(0, 0, 128, h, context, x0, y + 24)
         memory.Destroy()
@@ -77,7 +77,7 @@ def WCTF(win, dirname):
         memory = wx.MemoryDC()
         x,y = win.GetPosition()
         w,h = win.GetSize()
-        bitmap = wx.EmptyBitmap(w, h, -1)
+        bitmap = wx.Bitmap(w, h, -1)
         memory.SelectObject(bitmap)
         memory.Blit(0, 0, w, h, context, 0, 0)
         memory.Destroy()

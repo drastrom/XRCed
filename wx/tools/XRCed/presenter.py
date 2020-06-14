@@ -26,7 +26,7 @@ class _Presenter:
         self.setModified(False) # sets applied
         view.frame.Clear()
         view.tree.Clear()
-        view.tree.SetPyData(view.tree.root, Model.mainNode)
+        view.tree.SetItemData(view.tree.root, Model.mainNode)
         view.testWin.Init()
         g.undoMan.Clear()
         # Insert/append mode flags
@@ -37,7 +37,7 @@ class _Presenter:
     def loadXML(self, path):
         Model.loadXML(path)
         view.tree.Flush()
-        view.tree.SetPyData(view.tree.root, Model.mainNode)
+        view.tree.SetItemData(view.tree.root, Model.mainNode)
         self.setData(view.tree.root)
         if g.conf.expandOnOpen:
             view.tree.ExpandAll()
@@ -138,12 +138,12 @@ class _Presenter:
             self.comp = Manager.rootComponent
             self.panels = view.panel.SetData(self.container, self.comp, Model.mainNode)
         else:
-            node = view.tree.GetPyData(item)
+            node = view.tree.GetItemData(item)
             if node.nodeType != node.COMMENT_NODE:
                 TRACE('setData: %s', node.getAttribute('class'))
             self.comp = Manager.getNodeComp(node)
             parentItem = view.tree.GetItemParent(item)
-            parentNode = view.tree.GetPyData(parentItem)
+            parentNode = view.tree.GetItemData(parentItem)
             if parentNode == Model.mainNode:
                 self.container = Manager.rootComponent
             else:
@@ -159,7 +159,7 @@ class _Presenter:
     def highlight(self, item):
         TRACE('highlight')
         if view.testWin.IsDirty() or item == view.tree.root or \
-            view.tree.GetPyData(item).nodeType == Model.dom.COMMENT_NODE:
+            view.tree.GetItemData(item).nodeType == Model.dom.COMMENT_NODE:
             view.testWin.RemoveHighlight()
             return
         try:
@@ -209,13 +209,13 @@ class _Presenter:
             self.createSibling = False # can't create sibling of root
         if self.createSibling:
             parentItem = view.tree.GetItemParent(item)
-            parentNode = view.tree.GetPyData(parentItem)
+            parentNode = view.tree.GetItemData(parentItem)
         else:
-            parentNode = view.tree.GetPyData(item)
+            parentNode = view.tree.GetItemData(item)
         label = comp.getTreeText(child)
         imageId = comp.getTreeImageId(child)
         if self.createSibling:
-            node = view.tree.GetPyData(item)
+            node = view.tree.GetItemData(item)
             if self.insertBefore:
                 self.container.insertBefore(parentNode, child, node)
                 item = view.tree.InsertItemBefore(
@@ -227,7 +227,7 @@ class _Presenter:
                     parentItem, item, label, imageId, data=data)
         else:
             if self.insertBefore and view.tree.ItemHasChildren(item):
-                nextNode = view.tree.GetPyData(view.tree.GetFirstChild(item)[0])
+                nextNode = view.tree.GetItemData(view.tree.GetFirstChild(item)[0])
                 self.comp.insertBefore(parentNode, child, nextNode)
                 item = view.tree.PrependItem(item, label, imageId, data=data)
             else:
@@ -269,8 +269,8 @@ class _Presenter:
         data = wx.TreeItemData(node)
         item = self.item
         parentItem = view.tree.GetItemParent(item)
-        parentNode = view.tree.GetPyData(parentItem)
-        oldNode = view.tree.GetPyData(item)
+        parentNode = view.tree.GetItemData(parentItem)
+        oldNode = view.tree.GetItemData(item)
         self.container.replaceChild(parentNode, node, oldNode)
         # Replace tree item: insert new, remove old
         label = comp.getTreeText(node)
@@ -288,7 +288,7 @@ class _Presenter:
         return oldNode
 
     def subclass(self, item, subclass):
-        node = view.tree.GetPyData(item)
+        node = view.tree.GetItemData(item)
         if subclass:
             node.setAttribute('subclass', subclass)
         elif node.hasAttribute('subclass'):
@@ -302,7 +302,7 @@ class _Presenter:
 
     def update(self, item):
         '''Update DOM with new attribute values. Update tree if necessary.'''
-        node = view.tree.GetPyData(item)
+        node = view.tree.GetItemData(item)
         isComment = node.nodeType == node.COMMENT_NODE
         if isComment:
             subclass = None
@@ -388,8 +388,8 @@ class _Presenter:
         '''Delete selected object(s). Return removed XML node.'''
         TRACE('delete')
         parentItem = view.tree.GetItemParent(item)
-        parentNode = view.tree.GetPyData(parentItem)
-        node = view.tree.GetPyData(item)
+        parentNode = view.tree.GetItemData(parentItem)
+        node = view.tree.GetItemData(item)
         node = self.container.removeChild(parentNode, node)
         view.tree.Delete(item)
         # If deleting the top-level object, remove view
@@ -405,8 +405,8 @@ class _Presenter:
         for item in items:
             if not item.IsOk(): continue # child already deleted
             parentItem = view.tree.GetItemParent(item)
-            parentNode = view.tree.GetPyData(parentItem)
-            node = view.tree.GetPyData(item)
+            parentNode = view.tree.GetItemData(parentItem)
+            node = view.tree.GetItemData(item)
             node = self.container.removeChild(parentNode, node)
             node.unlink()       # delete completely
             view.tree.Delete(item)
@@ -423,7 +423,7 @@ class _Presenter:
         item = view.tree.GetSelection()
         if not self.applied:
             self.update(item)
-        node = view.tree.GetPyData(item)
+        node = view.tree.GetItemData(item)
         if self.container.requireImplicit(node):
             implicit = node.parentNode
         else:
@@ -503,7 +503,7 @@ class _Presenter:
         
         item = self.create(comp, node)
         if implicit:   # copy parameters for implicit node if possible
-            parentNode = view.tree.GetPyData(view.tree.GetItemParent(item))
+            parentNode = view.tree.GetItemData(view.tree.GetItemParent(item))
             parentComp = Manager.getNodeComp(parentNode)
             if parentComp.requireImplicit(node) and \
                     parentComp.implicitKlass == implicit.getAttribute('class'):
@@ -518,7 +518,7 @@ class _Presenter:
 
     def moveUp(self):
         parentItem = view.tree.GetItemParent(self.item)
-        treeNode = view.tree.GetPyData(self.item)
+        treeNode = view.tree.GetItemData(self.item)
         node = self.container.getTreeOrImplicitNode(treeNode)
         parent = node.parentNode
         prevNode = node.previousSibling
@@ -535,7 +535,7 @@ class _Presenter:
         
     def moveDown(self):
         parentItem = view.tree.GetItemParent(self.item)
-        treeNode = view.tree.GetPyData(self.item)
+        treeNode = view.tree.GetItemData(self.item)
         node = self.container.getTreeOrImplicitNode(treeNode)
         parent = node.parentNode
         nextNode = node.nextSibling
@@ -556,8 +556,8 @@ class _Presenter:
     def moveLeft(self):
         parentItem = view.tree.GetItemParent(self.item)
         grandParentItem = view.tree.GetItemParent(parentItem)
-        parent = view.tree.GetPyData(parentItem)
-        grandParent = view.tree.GetPyData(grandParentItem)
+        parent = view.tree.GetItemData(parentItem)
+        grandParent = view.tree.GetItemData(grandParentItem)
         if grandParent is Model.mainNode:
             grandParentComp = Manager.rootComponent
         else:
@@ -567,11 +567,11 @@ class _Presenter:
                         (grandParentComp.klass, self.comp.klass))
             return
 
-        node = view.tree.GetPyData(self.item)
+        node = view.tree.GetItemData(self.item)
         nextItem = view.tree.GetNextSibling(parentItem)
         self.container.removeChild(parent, node)
         if nextItem:
-            nextNode = view.tree.GetPyData(nextItem)
+            nextNode = view.tree.GetItemData(nextItem)
             grandParentComp.insertBefore(grandParent, node, nextNode)
         else:
             grandParentComp.appendChild(grandParent, node)
@@ -585,15 +585,15 @@ class _Presenter:
 
     def moveRight(self):
         parentItem = view.tree.GetItemParent(self.item)
-        parent = view.tree.GetPyData(parentItem)
-        newParent = view.tree.GetPyData(view.tree.GetPrevSibling(self.item))
+        parent = view.tree.GetItemData(parentItem)
+        newParent = view.tree.GetItemData(view.tree.GetPrevSibling(self.item))
         newParentComp = Manager.getNodeComp(newParent)
         if not newParentComp.canHaveChild(self.comp):
             wx.LogError('Incompatible parent/child: parent is %s, child is %s!' %
                         (newParentComp.klass, self.comp.klass))
             return
 
-        node = view.tree.GetPyData(self.item)
+        node = view.tree.GetItemData(self.item)
         self.container.removeChild(parent, node)
         newParentComp.appendChild(newParent, node)
         index = view.tree.ItemFullIndex(self.item)
@@ -613,7 +613,7 @@ class _Presenter:
     def createTestWin(self, item):
         TRACE('createTestWin')
         # Create a window with this resource
-        node = view.tree.GetPyData(item)
+        node = view.tree.GetItemData(item)
         # Execute "pragma" comment node
         if node.nodeType == node.COMMENT_NODE:
             if node.data and node.data[0] == '%' and g.conf.allowExec != 'no':
@@ -631,7 +631,7 @@ class _Presenter:
         testWinItem = item
         while not comp.isTestable:
             testWinItem = view.tree.GetItemParent(testWinItem)
-            node = view.tree.GetPyData(testWinItem)
+            node = view.tree.GetItemData(testWinItem)
             comp = Manager.getNodeComp(node)
         # Create memory XML file
         elem = node.cloneNode(True)
@@ -709,7 +709,7 @@ class _Presenter:
 
     def showXML(self):
         '''Show some source.'''
-        node = view.tree.GetPyData(self.item)
+        node = view.tree.GetItemData(self.item)
         dom = MyDocument()
         node = dom.appendChild(node.cloneNode(True))
         Model.indent(dom, node)
