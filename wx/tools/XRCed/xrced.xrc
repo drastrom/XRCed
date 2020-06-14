@@ -1,8 +1,6 @@
 <?xml version="1.0" ?>
 <resource>
   <object class="wxDialog" name="DIALOG_TEXT">
-    <title>Text Dialog</title>
-    <centered>1</centered>
     <object class="wxBoxSizer">
       <orient>wxVERTICAL</orient>
       <object class="sizeritem">
@@ -37,12 +35,11 @@
         <border>10</border>
       </object>
     </object>
+    <title>Text Dialog</title>
+    <centered>1</centered>
     <style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
   </object>
   <object class="wxDialog" name="DIALOG_CONTENT">
-    <title>Content</title>
-    <centered>1</centered>
-    <size>250,300</size>
     <object class="wxBoxSizer">
       <orient>wxVERTICAL</orient>
       <object class="sizeritem">
@@ -129,12 +126,12 @@
         <border>10</border>
       </object>
     </object>
+    <size>250,300</size>
+    <title>Content</title>
+    <centered>1</centered>
     <style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
   </object>
   <object class="wxDialog" name="DIALOG_CONTENT_CHECKLIST">
-    <title>Content</title>
-    <centered>1</centered>
-    <size>250,300</size>
     <object class="wxBoxSizer">
       <orient>wxVERTICAL</orient>
       <object class="sizeritem">
@@ -214,11 +211,12 @@
         <border>10</border>
       </object>
     </object>
+    <size>250,300</size>
+    <title>Content</title>
+    <centered>1</centered>
     <style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
   </object>
   <object class="wxDialog" name="DIALOG_CHOICES">
-    <title>Choices</title>
-    <centered>1</centered>
     <object class="wxBoxSizer">
       <orient>wxVERTICAL</orient>
       <object class="sizeritem">
@@ -249,11 +247,11 @@
         <border>10</border>
       </object>
     </object>
+    <title>Choices</title>
+    <centered>1</centered>
     <style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
   </object>
   <object class="wxDialog" name="DIALOG_STYLES">
-    <title>Window Styles</title>
-    <centered>1</centered>
     <object class="wxBoxSizer">
       <orient>wxVERTICAL</orient>
       <object class="sizeritem">
@@ -308,12 +306,11 @@
         <border>10</border>
       </object>
     </object>
+    <title>Window Styles</title>
+    <centered>1</centered>
     <style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
   </object>
   <object class="wxDialog" name="DIALOG_INTLIST">
-    <title>Numbers</title>
-    <centered>1</centered>
-    <size>100,300</size>
     <object class="wxBoxSizer">
       <orient>wxVERTICAL</orient>
       <object class="sizeritem">
@@ -321,17 +318,15 @@
           <orient>wxHORIZONTAL</orient>
           <object class="sizeritem">
             <object class="wxListBox" name="LIST">
-              <content/>
               <size>80,150</size>
               <style>wxLB_SORT</style>
             </object>
             <option>1</option>
-            <flag>wxALL|wxALIGN_CENTRE_HORIZONTAL</flag>
+            <flag>wxALL</flag>
             <border>5</border>
           </object>
           <object class="sizeritem">
             <object class="wxBoxSizer">
-              <orient>wxVERTICAL</orient>
               <object class="sizeritem">
                 <object class="wxSpinCtrl" name="SPIN">
                   <size>60,-1</size>
@@ -358,8 +353,9 @@
                 <flag>wxTOP</flag>
                 <border>5</border>
               </object>
+              <orient>wxVERTICAL</orient>
             </object>
-            <flag>wxALL|wxALIGN_CENTRE_HORIZONTAL</flag>
+            <flag>wxALL</flag>
             <border>5</border>
           </object>
         </object>
@@ -385,6 +381,9 @@
         <border>10</border>
       </object>
     </object>
+    <size>100,300</size>
+    <title>Numbers</title>
+    <centered>1</centered>
     <style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
   </object>
   <object class="wxPanel" name="PANEL_BITMAP">
@@ -500,7 +499,6 @@
     </object>
   </object>
   <object class="wxDialog" name="PYTHON_OPTIONS">
-    <title>Python Module Config</title>
     <object class="wxBoxSizer">
       <orient>wxVERTICAL</orient>
       <object class="sizeritem">
@@ -573,7 +571,6 @@
       </object>
       <object class="sizeritem">
         <object class="wxBoxSizer">
-          <orient>wxHORIZONTAL</orient>
           <object class="spacer">
             <size>1,10</size>
             <option>1</option>
@@ -601,11 +598,13 @@
               <label/>
             </object>
           </object>
+          <orient>wxHORIZONTAL</orient>
         </object>
-        <flag>wxALL|wxEXPAND|wxALIGN_CENTRE_HORIZONTAL</flag>
+        <flag>wxALL|wxEXPAND</flag>
         <border>10</border>
       </object>
     </object>
+    <title>Python Module Config</title>
   </object>
   <object class="wxPropertySheetDialog" name="DIALOG_PREFS">
     <object class="propertysheetpage">

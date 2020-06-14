@@ -300,11 +300,11 @@ class Component(object):
                                      style=wx.CAPTION|wx.CLOSE_BOX|wx.RESIZE_BORDER)
                 frame.panel = wx.Panel(frame)
             obj = res.LoadObject(frame.panel, STD_NAME, self.klass)
-            if not obj or not isinstance(object, wx.Window): 
+            if not obj or not isinstance(obj, wx.Window): 
                 raise TestWinError
             obj.SetPosition((10,10))
             if g.conf.fitTestWin: 
-                object.Fit()
+                obj.Fit()
                 if frame:
                     frame.SetClientSize(obj.GetSize()+(20,20))
                     testWin.size = frame.GetSize()
@@ -588,7 +588,7 @@ class Sizer(SmartContainer):
         return None                 # normally this is an error
 
     def getRect(self, obj):
-        rects = [wx.RectPS(obj.GetPosition(), obj.GetSize())]
+        rects = [wx.Rect(obj.GetPosition(), obj.GetSize())]
         for sizerItem in obj.GetChildren():
             rect = sizerItem.GetRect()
             rects.append(rect)

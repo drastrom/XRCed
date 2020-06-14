@@ -135,6 +135,8 @@ Please upgrade wxWidgets to %d.%d.%d or higher.''' % MinWxVersion)
                 view.frame.miniFrame.Show()
             if g.conf.showToolPanel:
                 Listener.toolFrame.Show()
+            # Don't know why, but this fixes initial display
+            view.frame.EmbedUnembed(g.conf.embedPanel)
 
         return True
 
