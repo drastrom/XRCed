@@ -1044,7 +1044,7 @@ class StylePanel(wx.Panel):
         return [(self.tag, '|'.join(checked))]
 
     def SetValues(self, values):
-        styles = set(map(str.strip, values[0][1].split('|')))
+        styles = set(value.strip() for value in values[0][1].split('|'))
         for s,check in self.controls:
             check.SetValue(s in styles or (s in self.equivStyles and self.equivStyles[s] in styles))
 
@@ -1079,7 +1079,7 @@ class CheckListBoxComboPopup(wx.ComboPopup):
 
     def OnPopup(self):
         combo = self.GetComboCtrl()
-        value = list(map(str.strip, combo.GetValue().split('|')))
+        value = [value.strip() for value in combo.GetValue().split('|')]
         if value == ['']: value = []
         self.ignored = []
         for i in value:
