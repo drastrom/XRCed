@@ -182,6 +182,8 @@ class _Listener:
     def Uninstall(self):
         '''Unbind some event before destroying.'''
         self.frame.Unbind(wx.EVT_IDLE)
+        self.tree.Unbind(wx.EVT_TREE_SEL_CHANGING)
+        self.tree.Unbind(wx.EVT_TREE_SEL_CHANGED)
 
     def OnComponentCreate(self, evt):
         '''Hadnler for creating new elements.'''
