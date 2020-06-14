@@ -432,10 +432,9 @@ class ParamComment(ParamText):
 class ContentDialog(wx.Dialog):
     '''Dialog for editing content attributes.'''
     def __init__(self, parent, value):
+        wx.Dialog.__init__(self)
         # Load from resource
-        pre = wx.PreDialog()
-        g.res.LoadOnDialog(pre, parent, 'DIALOG_CONTENT')
-        self.PostCreate(pre)
+        g.res.LoadDialog(self, parent, 'DIALOG_CONTENT')
         self.list = xrc.XRCCTRL(self, 'LIST')
         # Set list items
         for v in value:
@@ -490,9 +489,8 @@ class ContentDialog(wx.Dialog):
 class ContentCheckListDialog(ContentDialog):
     '''Dialog for editing content checklist attributes.'''
     def __init__(self, parent, value):
-        pre = wx.PreDialog()
-        g.res.LoadOnDialog(pre, parent, 'DIALOG_CONTENT_CHECKLIST')
-        self.PostCreate(pre)
+        wx.Dialog.__init__(self)
+        g.res.LoadDialog(self, parent, 'DIALOG_CONTENT_CHECKLIST')
         self.list = xrc.XRCCTRL(self, 'CHECK_LIST')
         # Set list items
         i = 0
@@ -535,9 +533,8 @@ class ContentCheckListDialog(ContentDialog):
 class ContentHelpListDialog(wx.Dialog):
     '''Dialog for editing content attributes with help text.'''
     def __init__(self, parent, value):
-        pre = wx.PreDialog()
-        g.res.LoadOnDialog(pre, parent, 'DIALOG_CONTENT_HELPLIST')
-        self.PostCreate(pre)
+        wx.Dialog.__init__(self)
+        g.res.LoadDialog(self, parent, 'DIALOG_CONTENT_HELPLIST')
         self.list = xrc.XRCCTRL(self, 'LIST')
         self.list.InsertColumn(0, 'label')
         self.list.InsertColumn(1, 'tooltip')
@@ -701,9 +698,8 @@ class ParamContentHelpList(ParamContent):
 class IntListDialog(wx.Dialog):
     '''Dialog for editing integer lists.'''
     def __init__(self, parent, value):
-        pre = wx.PreDialog()
-        g.res.LoadOnDialog(pre, parent, 'DIALOG_INTLIST')
-        self.PostCreate(pre)
+        wx.Dialog.__init__(self)
+        g.res.LoadOnDialog(self, parent, 'DIALOG_INTLIST')
         self.list = xrc.XRCCTRL(self, 'LIST')
         # Set list items
         value.sort()
@@ -1062,6 +1058,7 @@ class CheckListBoxComboPopup(wx.ComboPopup):
         
     def __init__(self, values):
         self.values = values
+        self.equal = {}
         self.control = wx.CheckListBox()
         wx.ComboPopup.__init__(self)
         
@@ -1077,10 +1074,20 @@ class CheckListBoxComboPopup(wx.ComboPopup):
     def GetControl(self):
         return self.control
 
-    def OnPopup(self):
-        combo = self.GetComboCtrl()
-        value = [value.strip() for value in combo.GetValue().split('|')]
+    def GetStringValue(self):
+        value = []
+        for i in range(self.control.GetCount()):
+            if self.control.IsChecked(i):
+                value.append(self.values[i])
+        # Add ignored flags
+        value.extend(self.ignored)
+        strValue = '|'.join(value)
+        return strValue
+
+    def SetStringValue(self, strValue):
+        value = [value.strip() for value in strValue.split('|')]
         if value == ['']: value = []
+        self.control.SetCheckedItems([])
         self.ignored = []
         for i in value:
             try:
@@ -1092,24 +1099,6 @@ class CheckListBoxComboPopup(wx.ComboPopup):
                 else:
                     logger.warning('unknown flag: %s: ignored.', i)
                     self.ignored.append(i)
-
-        wx.ComboPopup.OnPopup(self)
-
-    def OnDismiss(self):
-        combo = self.GetComboCtrl()
-        value = []
-        for i in range(self.control.GetCount()):
-            if self.control.IsChecked(i):
-                value.append(self.values[i])
-        # Add ignored flags
-        value.extend(self.ignored)
-        strValue = '|'.join(value)
-        if combo.GetValue() != strValue:
-            combo.SetValue(strValue)
-            Presenter.setApplied(False)
-
-        wx.ComboPopup.OnDismiss(self)
-
     if wx.Platform in ['__WXMAC__', '__WXMSW__']:
         def OnMotion(self, evt):
             item  = self.control.HitTest(evt.GetPosition())
