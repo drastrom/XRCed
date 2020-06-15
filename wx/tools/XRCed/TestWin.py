@@ -281,13 +281,13 @@ class DropTarget(wx.DropTarget):
             scrPos = view.testWin.object.ClientToScreen((x,y))
         obj = wx.FindWindowAtPoint(scrPos)
         if not obj:
-            return wx.DragNone, ()
+            return wx.DragError, ()
         if obj.GetId() == Highlight.ID_HL:
             self.onHL = True
             return d, ()
         item = view.testWin.FindObjectItem(view.testWin.item, obj)
         if not item:
-            return wx.DragNone, ()
+            return wx.DragError, ()
         # If window has a sizer use it as parent
         if obj.GetSizer():
             obj = obj.GetSizer()
@@ -301,7 +301,7 @@ class DropTarget(wx.DropTarget):
         self.GetData()
         id = int(self.do.GetData())
         d,other = self.WhereToDrop(x, y, d)
-        if d != wx.DragNone and other:
+        if d != wx.DragError and other:
             obj,item = other
             g.Presenter.setData(item)
             comp = Manager.findById(id)
@@ -310,7 +310,7 @@ class DropTarget(wx.DropTarget):
             forceInsert = mouseState.ShiftDown()
             g.Presenter.updateCreateState(forceSibling, forceInsert)
             if not g.Presenter.checkCompatibility(comp):
-                return wx.DragNone
+                return wx.DragError
             item = g.Presenter.create(comp)
             node = view.tree.GetItemData(item)
             parentItem = view.tree.GetItemParent(item)
@@ -332,7 +332,7 @@ class DropTarget(wx.DropTarget):
 
     def OnDragOver(self, x, y, d):
         d,other = self.WhereToDrop(x, y, d)
-        if d == wx.DragNone:
+        if d == wx.DragError:
             view.frame.SetStatusText('Inappropriate drop target')
             view.testWin.RemoveHighlightDT()
         elif other:
@@ -343,7 +343,7 @@ class DropTarget(wx.DropTarget):
             hl = view.testWin.hlDT
             if not hl or hl.item != item:
                 rect = view.testWin.FindObjectRect(item)
-                if not rect: return wx.DragNone
+                if not rect: return wx.DragError
                 view.testWin.HighlightDT(rect, item)
                 view.tree.EnsureVisible(item)
             view.frame.SetStatusText('Drop target: %s' % view.tree.GetItemText(item))
