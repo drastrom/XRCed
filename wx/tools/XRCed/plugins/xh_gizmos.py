@@ -6,6 +6,7 @@
 
 import wx
 import wx.xrc as xrc
+import wx.adv as adv
 import wx.gizmos as gizmos
 
 class LEDNumberCtrlXmlHandler(xrc.XmlResourceHandler):
@@ -44,9 +45,9 @@ class EditableListBoxXmlHandler(xrc.XmlResourceHandler):
         # Standard styles
         self.AddWindowStyles()
         # Custom styles
-        self.AddStyle('wxEL_ALLOW_NEW', gizmos.EL_ALLOW_NEW)
-        self.AddStyle('wxEL_ALLOW_EDIT', gizmos.EL_ALLOW_EDIT)
-        self.AddStyle('wxEL_ALLOW_DELETE', gizmos.EL_ALLOW_DELETE)
+        self.AddStyle('wxEL_ALLOW_NEW', adv.EL_ALLOW_NEW)
+        self.AddStyle('wxEL_ALLOW_EDIT', adv.EL_ALLOW_EDIT)
+        self.AddStyle('wxEL_ALLOW_DELETE', adv.EL_ALLOW_DELETE)
         
     def CanHandle(self, node):
         return self.IsOfClass(node, 'EditableListBox')
@@ -57,7 +58,7 @@ class EditableListBoxXmlHandler(xrc.XmlResourceHandler):
     def DoCreateResource(self):
         assert self.GetInstance() is None
         
-        w = gizmos.EditableListBox(self.GetParentAsWindow(),
+        w = adv.EditableListBox(self.GetParentAsWindow(),
                                    self.GetID(),
                                    self.GetText("label"),
                                    self.GetPosition(),
@@ -91,20 +92,20 @@ class TreeListCtrlXmlHandler(xrc.XmlResourceHandler):
         # Standard styles
         self.AddWindowStyles()
         # Custom styles
-        self.AddStyle('wxTR_DEFAULT_STYLE', wx.TR_DEFAULT_STYLE)
-        self.AddStyle('wxTR_EDIT_LABELS', wx.TR_EDIT_LABELS)
-        self.AddStyle('wxTR_NO_BUTTONS', wx.TR_NO_BUTTONS)
-        self.AddStyle('wxTR_HAS_BUTTONS', wx.TR_HAS_BUTTONS)
-        self.AddStyle('wxTR_TWIST_BUTTONS', wx.TR_TWIST_BUTTONS)
-        self.AddStyle('wxTR_NO_LINES', wx.TR_NO_LINES)
-        self.AddStyle('wxTR_FULL_ROW_HIGHLIGHT', wx.TR_FULL_ROW_HIGHLIGHT)
-        self.AddStyle('wxTR_LINES_AT_ROOT', wx.TR_LINES_AT_ROOT)
-        self.AddStyle('wxTR_HIDE_ROOT', wx.TR_HIDE_ROOT)
-        self.AddStyle('wxTR_ROW_LINES', wx.TR_ROW_LINES)
-        self.AddStyle('wxTR_HAS_VARIABLE_ROW_HEIGHT', wx.TR_HAS_VARIABLE_ROW_HEIGHT)
-        self.AddStyle('wxTR_SINGLE', wx.TR_SINGLE)
-        self.AddStyle('wxTR_MULTIPLE', wx.TR_MULTIPLE)
-        self.AddStyle('wxTR_EXTENDED', wx.TR_EXTENDED)
+        self.AddStyle('wxTR_DEFAULT_STYLE', gizmos.TR_DEFAULT_STYLE)
+        self.AddStyle('wxTR_EDIT_LABELS', gizmos.TR_EDIT_LABELS)
+        self.AddStyle('wxTR_NO_BUTTONS', gizmos.TR_NO_BUTTONS)
+        self.AddStyle('wxTR_HAS_BUTTONS', gizmos.TR_HAS_BUTTONS)
+        self.AddStyle('wxTR_TWIST_BUTTONS', gizmos.TR_TWIST_BUTTONS)
+        self.AddStyle('wxTR_NO_LINES', gizmos.TR_NO_LINES)
+        self.AddStyle('wxTR_FULL_ROW_HIGHLIGHT', gizmos.TR_FULL_ROW_HIGHLIGHT)
+        self.AddStyle('wxTR_LINES_AT_ROOT', gizmos.TR_LINES_AT_ROOT)
+        self.AddStyle('wxTR_HIDE_ROOT', gizmos.TR_HIDE_ROOT)
+        self.AddStyle('wxTR_ROW_LINES', gizmos.TR_ROW_LINES)
+        self.AddStyle('wxTR_HAS_VARIABLE_ROW_HEIGHT', gizmos.TR_HAS_VARIABLE_ROW_HEIGHT)
+        self.AddStyle('wxTR_SINGLE', gizmos.TR_SINGLE)
+        self.AddStyle('wxTR_MULTIPLE', gizmos.TR_MULTIPLE)
+        self.AddStyle('wxTR_EXTENDED', gizmos.TR_EXTENDED)
         
     def CanHandle(self, node):
         return self.IsOfClass(node, 'TreeListCtrl')

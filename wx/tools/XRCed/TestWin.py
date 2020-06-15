@@ -299,7 +299,7 @@ class DropTarget(wx.DropTarget):
         view.testWin.RemoveHighlightDT()
         self.onHL = self.left = False
         self.GetData()
-        id = int(self.do.GetDataHere())
+        id = int(self.do.GetData())
         d,other = self.WhereToDrop(x, y, d)
         if d != wx.DragNone and other:
             obj,item = other
@@ -409,10 +409,10 @@ class Highlight:
         if size.width == -1: size.width = 0
         if size.height == -1: size.height = 0
         self.Destroy(4)
-        self.lines[0].SetDimensions(pos.x, pos.y, size.width, 2)
-        self.lines[1].SetDimensions(pos.x, pos.y, 2, size.height)
-        self.lines[2].SetDimensions(pos.x + size.width - 2, pos.y, 2, size.height)
-        self.lines[3].SetDimensions(pos.x, pos.y + size.height - 2, size.width, 2)
+        self.lines[0].SetSize(pos.x, pos.y, size.width, 2)
+        self.lines[1].SetSize(pos.x, pos.y, 2, size.height)
+        self.lines[2].SetSize(pos.x + size.width - 2, pos.y, 2, size.height)
+        self.lines[3].SetSize(pos.x, pos.y + size.height - 2, size.width, 2)
         [l.Raise() for l in self.lines]
         if self.moreLines: [self.AddSizerItem(r) for r in rects]
 

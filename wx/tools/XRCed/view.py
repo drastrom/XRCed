@@ -475,25 +475,25 @@ class PrefsDialog(wx.adv.PropertySheetDialog): #(wx.PropertySheetDialog): !!! no
 
         self.check_proportionContainer = xrc.XRCCTRL(self, 'check_proportionContainer')
         id = self.check_proportionContainer.GetId()
-        wx.EVT_CHECKBOX(self, id, self.OnCheck)
+        self.Bind(wx.EVT_CHECKBOX, self.OnCheck, id=id)
         self.checkControls[id] = (xrc.XRCCTRL(self, 'spin_proportionContainer'),
                                   conf.defaultsContainer, 'option')
 
         self.check_flagContainer = xrc.XRCCTRL(self, 'check_flagContainer')
         id = self.check_flagContainer.GetId()
-        wx.EVT_CHECKBOX(self, id, self.OnCheck)
+        self.Bind(wx.EVT_CHECKBOX, self.OnCheck, id=id)
         self.checkControls[id] = (xrc.XRCCTRL(self, 'text_flagContainer'),
                                   conf.defaultsContainer, 'flag')
 
         self.check_proportionControl = xrc.XRCCTRL(self, 'check_proportionControl')
         id = self.check_proportionControl.GetId()
-        wx.EVT_CHECKBOX(self, id, self.OnCheck)
+        self.Bind(wx.EVT_CHECKBOX, self.OnCheck, id=id)
         self.checkControls[id] = (xrc.XRCCTRL(self, 'spin_proportionControl'),
                                   conf.defaultsControl, 'option')
 
         self.check_flagControl = xrc.XRCCTRL(self, 'check_flagControl')
         id = self.check_flagControl.GetId()
-        wx.EVT_CHECKBOX(self, id, self.OnCheck)
+        self.Bind(wx.EVT_CHECKBOX, self.OnCheck, id=id)
         self.checkControls[id] = (xrc.XRCCTRL(self, 'text_flagControl'),
                                   conf.defaultsControl, 'flag')
 

@@ -381,6 +381,8 @@ class _Listener:
         g.undoMan.Clear()
         #self.panel.Destroy()            # destroy panel before tree
         self.Uninstall()
+        if g.useAUI:
+            view.frame.mgr.UnInit()
         self.frame.Destroy()
 
     def OnUndo(self, evt):
@@ -796,7 +798,7 @@ Homepage: http://xrced.sourceforge.net\
     def OnSubclass(self, evt):
         node = self.tree.GetItemData(Presenter.item)
         subclass = node.getAttribute('subclass')
-        dlg = wx.TextEntryDialog(self.frame, 'Subclass:', defaultValue=subclass)
+        dlg = wx.TextEntryDialog(self.frame, 'Subclass:', value=subclass)
         if dlg.ShowModal() == wx.ID_OK:
             subclass = dlg.GetValue()
             Presenter.subclass(Presenter.item, subclass)

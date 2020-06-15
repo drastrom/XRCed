@@ -139,6 +139,8 @@ class _Presenter:
             self.panels = view.panel.SetData(self.container, self.comp, Model.mainNode)
         else:
             node = view.tree.GetItemData(item)
+            if node is None:
+                return
             if node.nodeType != node.COMMENT_NODE:
                 TRACE('setData: %s', node.getAttribute('class'))
             self.comp = Manager.getNodeComp(node)
@@ -201,7 +203,6 @@ class _Presenter:
             # Set default values
             for k,v in comp.defaults.items():
                 comp.addAttribute(child, k, v)
-        data = wx.TreeItemData(child)
         item = self.item
         if not self.applied:
             self.update(item)
@@ -219,20 +220,20 @@ class _Presenter:
             if self.insertBefore:
                 self.container.insertBefore(parentNode, child, node)
                 item = view.tree.InsertItemBefore(
-                    parentItem, item, label, imageId, data=data)
+                    parentItem, item, label, imageId, data=child)
 
             else:
                 self.container.insertAfter(parentNode, child, node)
                 item = view.tree.InsertItem(
-                    parentItem, item, label, imageId, data=data)
+                    parentItem, item, label, imageId, data=child)
         else:
             if self.insertBefore and view.tree.ItemHasChildren(item):
                 nextNode = view.tree.GetItemData(view.tree.GetFirstChild(item)[0])
                 self.comp.insertBefore(parentNode, child, nextNode)
-                item = view.tree.PrependItem(item, label, imageId, data=data)
+                item = view.tree.PrependItem(item, label, imageId, data=child)
             else:
                 self.comp.appendChild(parentNode, child)
-                item = view.tree.AppendItem(item, label, imageId, data=data)
+                item = view.tree.AppendItem(item, label, imageId, data=child)
         view.tree.SetItemStyle(item, child)
         view.tree.EnsureVisible(item)
         view.tree.UnselectAll()
@@ -648,7 +649,7 @@ class _Presenter:
         # Use translations if encoding is not specified
         if not Model.dom.encoding:
             xmlFlags |= xrc.XRC_USE_LOCALE
-        res = xrc.EmptyXmlResource(xmlFlags)
+        res = xrc.XmlResource(xmlFlags)
         xrc.XmlResource.Set(res)        # set as global
         # Init other handlers
         Manager.addXmlHandlers(res)

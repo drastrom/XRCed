@@ -88,7 +88,7 @@ class XMLTree(wx.TreeCtrl):
             wx.LogWarning('Unknown component class "%s", registered as generic' % className)
         item = self.AppendItem(parent, comp.getTreeText(node), 
                                image=comp.getTreeImageId(node),
-                               data=wx.TreeItemData(node))
+                               data=node)
         self.SetItemStyle(item, node)
         # Try to find children objects
         if comp.isContainer():

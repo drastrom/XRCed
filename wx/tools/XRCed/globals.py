@@ -120,14 +120,17 @@ g.basePath = os.path.abspath(g.basePath)
 # Data object used for clipboard
 class MyDataObject(wx.DataObjectSimple):
     def __init__(self, data=''):
-        wx.DataObjectSimple.__init__(self, wx.CustomDataFormat('XRCed_DND'))
-        self.data = data
+        wx.DataObjectSimple.__init__(self, wx.DataFormat('XRCed_DND'))
+        self.data = data.encode("utf-8")
     def GetDataSize(self):
         return len(self.data)
-    def GetDataHere(self):
-        return self.data  # returns a string  
+    def GetDataHere(self, buf):
+        buf[:] = self.data  # returns a string  
+        return True
+    def GetData(self):
+        return self.data.decode("utf-8")
     def SetData(self, data):
-        self.data = data
+        self.data = data.tobytes()
         return True
 
 # Test for object elements (!!! move somewhere?)

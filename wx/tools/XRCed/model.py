@@ -162,7 +162,7 @@ class MemoryFile:
         if Model.dom.encoding:
             encoding = Model.dom.encoding
         else:
-            encoding = wx.GetDefaultPyEncoding()
+            encoding = defaultEncoding
         try:
             self.buffer += data.encode(encoding)
         except UnicodeEncodeError:

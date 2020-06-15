@@ -174,10 +174,12 @@ class ToolPanel(wx.Panel):
         if wx.Platform == '__WXGTK__':
             icon = wx.EmptyIcon()
             icon.CopyFromBitmap(bm)
-            dragSource = wx.DropSource(self, icon)
+            dragSource = wx.DropSource(self)
+            dragSource.SetIcon(wx.DragResult.DragCopy, icon)
         else:
-            curs = wx.CursorFromImage(wx.ImageFromBitmap(bm))
-            dragSource = wx.DropSource(self, curs)
+            curs = wx.Cursor(bm.ConvertToImage())
+            dragSource = wx.DropSource(self)
+            dragSource.SetCursor(wx.DragResult.DragCopy, curs)
         do = MyDataObject(str(self.btnDown.GetId()))
         dragSource.SetData(do)
         view.frame.SetStatusText('Release the mouse button over the test window')
