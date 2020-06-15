@@ -4,7 +4,6 @@
 # Created:      17.06.2007
 # RCS-ID:       $Id$
 
-import string
 import wx
 import wx.lib.buttons as buttons
 from .globals import *

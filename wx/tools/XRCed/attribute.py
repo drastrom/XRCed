@@ -218,6 +218,7 @@ class EncodingAttribute(AttributeAttribute):
         return Model.dom.encoding
             
 class CDATAAttribute(Attribute):
+    @staticmethod
     def add(parentNode, attribute, value):
         '''value is a dictionary.'''
         if value:
