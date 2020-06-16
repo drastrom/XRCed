@@ -618,9 +618,13 @@ Homepage: http://xrced.sourceforge.net\
 
     # Simple emulation of python command line
     def OnDebugCMD(self, evt):
+        try:
+            rin = raw_input
+        except NameError:
+            rin = input
         while 1:
             try:
-                exec (raw_input('C:\> '))
+                exec (rin(r'C:\> '))
             except EOFError:
                 print('^D')
                 break
