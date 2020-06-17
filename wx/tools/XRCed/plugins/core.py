@@ -291,10 +291,10 @@ class StdDialogButtonSizer(component.Sizer):
         # This sizer orders buttons by fixed ordering, so we must
         # get the ID to find them
         try:
-            n = filter(is_element, node.childNodes)[index]
-            n = filter(is_element, n.childNodes)[0]
+            n = list(filter(is_element, node.childNodes))[index]
+            n = next(filter(is_element, n.childNodes))
             id = n.getAttribute('name')
-        except IndexError:
+        except (IndexError, StopIteration):
             return None
         items = filter(wx.SizerItem.IsWindow, obj.GetChildren())
         for item in items:
