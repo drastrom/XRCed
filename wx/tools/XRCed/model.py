@@ -44,15 +44,13 @@ class _Model:
         self.mainNode.insertBefore(self.testElem, self.mainNode.firstChild)
 
     def loadXML(self, path):
-        f = open(path)
+        f = open(path, "rb")
         dom = minidom.parse(f)
         f.close()
         self.init(dom)
 
         # Set encoding global variable and default encoding
-        if dom.encoding:
-            wx.SetDefaultPyEncoding(dom.encoding.encode())
-        else:
+        if not dom.encoding:
             dom.encoding = ''
         
     def saveXML(self, path):
