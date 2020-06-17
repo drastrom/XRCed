@@ -265,10 +265,10 @@ class _Presenter:
         TRACE('replace')
         if node is None:
             node = Model.createObjectNode(comp.klass)
+        item = self.item
         if not self.applied:
             self.update(item)
         data = wx.TreeItemData(node)
-        item = self.item
         parentItem = view.tree.GetItemParent(item)
         parentNode = view.tree.GetItemData(parentItem)
         oldNode = view.tree.GetItemData(item)
@@ -301,8 +301,10 @@ class _Presenter:
         view.tree.SelectItem(item)
         self.setModified()        
 
-    def update(self, item):
+    def update(self, item=None):
         '''Update DOM with new attribute values. Update tree if necessary.'''
+        if item is None:
+            item = self.item
         node = view.tree.GetItemData(item)
         isComment = node.nodeType == node.COMMENT_NODE
         if isComment:

@@ -253,7 +253,7 @@ class Component(object):
         '''True if the current component can be replaced by component.
 
         This function can be redefined by derived classes.'''
-        return component.groups == groups
+        return component.groups == self.groups
 
     def isContainer(self):
         '''True if component is a container (can have child nodes).'''
