@@ -21,8 +21,6 @@ using the Manager global object.
 
 import os,sys,bisect
 import wx
-try: set
-except: from sets import Set as set
 from .globals import *
 from .model import Model
 from .attribute import *
