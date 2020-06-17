@@ -143,13 +143,34 @@ class _Model:
         f.close()
 
     def findResource(self, name, classname='', recursive=True):
-        found = DoFindResource(self.mainNode, name, classname, recursive)
+        found = self.DoFindResource(self.mainNode, name, classname, recursive)
         if found: return found
         # Try to look in external files
         for dom in self.external:
-            found = DoFindResource(dom.documentElement, name, '', True)
+            found = self.DoFindResource(dom.documentElement, name, '', True)
             if found: return found
         wx.LogError('XRC resource "%s" not found!' % name)
+
+    # Imitation of FindResource/DoFindResource from xmlres.cpp
+    def DoFindResource(self, parent, name, classname, recursive):
+        for n in parent.childNodes:
+            if n.nodeType == minidom.Node.ELEMENT_NODE and \
+                n.tagName in ['object', 'object_ref'] and \
+                n.getAttribute('name') == name:
+                cls = n.getAttribute('class')
+                if not classname or cls == classname:  return n
+                if not cls and n.tagName == 'object_ref':
+                    refName = n.getAttribute('ref')
+                    if not refName:  continue
+                    refNode = self.findResource(refName)
+                    if refName and refNode.getAttribute('class') == classname:
+                        return n
+        if recursive:
+            for n in parent.childNodes:
+                if n.nodeType == minidom.Node.ELEMENT_NODE and \
+                    n.tagName in ['object', 'object_ref']:
+                    found = self.DoFindResource(n, name, classname, True)
+                    if found:  return found
 
 Model = _Model()
 
@@ -170,25 +191,4 @@ class MemoryFile:
             
     def close(self):
         wx.MemoryFSHandler.AddFile(self.name, self.buffer)
-
-# Imitation of FindResource/DoFindResource from xmlres.cpp
-def DoFindResource(parent, name, classname, recursive):
-    for n in parent.childNodes:
-        if n.nodeType == minidom.Node.ELEMENT_NODE and \
-               n.tagName in ['object', 'object_ref'] and \
-               n.getAttribute('name') == name:
-            cls = n.getAttribute('class')
-            if not classname or cls == classname:  return n
-            if not cls and n.tagName == 'object_ref':
-                refName = n.getAttribute('ref')
-                if not refName:  continue
-                refNode = FindResource(refName)
-                if refName and refNode.getAttribute('class') == classname:
-                    return n
-    if recursive:
-        for n in parent.childNodes:
-            if n.nodeType == minidom.Node.ELEMENT_NODE and \
-                   n.tagName in ['object', 'object_ref']:
-                found = DoFindResource(n, name, classname, True)
-                if found:  return found
 

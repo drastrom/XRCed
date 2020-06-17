@@ -11,7 +11,7 @@ def main(filemask, output):
     files.sort()
 
     # Truncate the inages module
-    open(output, 'w')
+    open(output, 'w').close()
 
     # call img2py on each file
     for file in files:

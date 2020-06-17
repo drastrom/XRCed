@@ -462,9 +462,7 @@ class _Listener:
         g.undoMan.RegisterUndo(undo.UndoPasteCreate(itemIndex, treeState))
 
     def OnUnselect(self, evt):
-        self.tree.UnselectAll()
-        if not Presenter.applied: Presenter.update()
-        Presenter.setData(self.tree.root)
+        Presenter.unselect()
 
     def OnMoveUp(self, evt):
         self.inIdle = True
@@ -559,7 +557,7 @@ class _Listener:
                 ask = wx.MessageBox('Search failed. Search from the root?', 
                                     'Question', wx.YES_NO)
                 if ask == wx.YES:
-                    item = self.tree.Find(self.tree.root, name)
+                    item = self.tree.Find(self.tree.root, self.lastSearch)
                     if not item: 
                         self.frame.SetStatusText('Search failed')
                         wx.LogError('Search from the root failed.')
@@ -714,7 +712,6 @@ Homepage: http://xrced.sourceforge.net\
         if self.inUpdateUI: return          # Recursive call protection
         self.inUpdateUI = True
         container = Presenter.container
-        comp = Presenter.comp
         treeNode = self.tree.GetPyData(Presenter.item)
         isComment = treeNode and treeNode.nodeType == treeNode.COMMENT_NODE
         # Wokraround for wxMSW: view.tree.GetPrevSibling crashes
@@ -831,7 +828,7 @@ Homepage: http://xrced.sourceforge.net\
     #
     
     def OnTreeLeftDown(self, evt):
-        pt = evt.GetPosition();
+        pt = evt.GetPosition()
         item, flags = self.tree.HitTest(pt)
         if flags & wx.TREE_HITTEST_NOWHERE or not item:
             # Unselecting seems to be broken on wxGTK!!!
