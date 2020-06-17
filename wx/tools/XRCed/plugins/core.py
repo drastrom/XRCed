@@ -5,6 +5,7 @@
 # RCS-ID:       $Id$
 
 import wx
+import wx.adv
 from wx.tools.XRCed import component, images, attribute, params, view
 from wx.tools.XRCed.globals import TRACE,is_object,is_element,STD_NAME
 import _bitmaps as bitmaps
@@ -157,12 +158,11 @@ component.Manager.setTool(c, 'Windows', bitmaps.wxPanel.GetBitmap(), (0,2))
 class Wizard(component.Container):
     genericStyles = genericExStyles = []
     def makeTestWin(self, res, name):
-        wiz = wx.wizard.PreWizard()
-        res.LoadOnObject(wiz, view.frame, STD_NAME, self.klass)
+        wiz = res.LoadObject(view.frame, STD_NAME, self.klass)
         # Find and select first page
         firstPage = None
         for w in wiz.GetChildren():
-            if isinstance(w, wx.wizard.WizardPage):
+            if isinstance(w, wx.adv.WizardPage):
                 firstPage = w
                 break
         if firstPage:
@@ -182,22 +182,9 @@ component.Manager.setTool(c, 'Windows', bitmaps.wxWizard.GetBitmap(), (1,0), (1,
 
 ### wxWizardPage
 
-class WizardPage(component.Container):
-    def makeTestWin(self, res, name):
-        # Create single-page wizard
-        wiz = wx.wizard.Wizard(view.frame, title='Test Wizard')
-        print(self.klass)
-        import pdb;pdb.set_trace()
-        page = wx.wizard.PrePyWizardPage()
-        print(res.LoadOnObject(page, wiz, STD_NAME, self.klass))
-#        page = res.LoadObject(wiz, STD_NAME, self.klass)
-        print(page)
-        wiz.RunWizard(page)
-        wiz.Destroy()
-        return None, None
-
-c = WizardPage('wxWizardPage', ['wizard_page', 'window'], ['bitmap'],
+c = component.Container('wxWizardPage', ['wizard_page', 'window'], ['bitmap'],
                image=images.TreePanel.GetImage())
+c.isTestable = False
 c.setSpecial('bitmap', attribute.BitmapAttribute)
 component.Manager.register(c)
 component.Manager.setMenu(c, 'container', 'wizard page', 'wxWizardPage')
@@ -206,6 +193,7 @@ component.Manager.setMenu(c, 'container', 'wizard page', 'wxWizardPage')
 
 c = component.Container('wxWizardPageSimple', ['wizard_page', 'window'], ['bitmap'],
               image=images.TreePanel.GetImage())
+c.isTestable = False
 c.setSpecial('bitmap', attribute.BitmapAttribute)
 component.Manager.register(c)
 component.Manager.setMenu(c, 'container', 'simple wizard page', 'wxWizardPageSimple')

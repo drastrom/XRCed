@@ -7,10 +7,6 @@
 import os,sys
 import wx
 import wx.xrc as xrc
-try:
-    import wx.wizard
-except:
-    pass
 
 import logging
 logging.basicConfig()
