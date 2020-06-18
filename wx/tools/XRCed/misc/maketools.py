@@ -30,7 +30,7 @@ def WTF(win, filename):
         memory.Blit(0, 0, w, h, context, x, y)
         memory.Destroy()
         context.Destroy()
-    print 'Saving bitmap ', filename
+    print('Saving bitmap ', filename)
     bitmap.SaveFile(filename, wx.BITMAP_TYPE_PNG)
     bitmap.Destroy()
 
@@ -58,7 +58,7 @@ def WTFC(win, filename, obj):
         memory.Blit(0, 0, 128, h, context, x0, y + 24)
         memory.Destroy()
         context.Destroy()
-    print 'Saving bitmap ', filename
+    print('Saving bitmap ', filename)
     bitmap.SaveFile(filename, wx.BITMAP_TYPE_PNG)
     bitmap.Destroy()
 
@@ -86,7 +86,7 @@ def WCTF(win, dirname):
         klass = w.GetClassName()
         if w.GetName() != '-1': # replace by the true name
             klass = w.GetName()
-        print 'Saving bitmap for', klass
+        print('Saving bitmap for', klass)
         filename = os.path.join(dirname, klass + '.png')
         sub = bitmap.GetSubBitmap(w.GetRect())
         sub.SaveFile(filename, wx.BITMAP_TYPE_PNG)
@@ -96,7 +96,7 @@ def WCTF(win, dirname):
 def create_panels(main_frame):
     frame = res.LoadFrame(main_frame, 'FRAME_Panels')
     if not frame:
-        print 'error loading FRAME_Panels'
+        print('error loading FRAME_Panels')
         return None
     # Put some data
     for w in frame.GetChildren():
@@ -134,7 +134,7 @@ def create_panels(main_frame):
 def create_controls(main_frame):
     frame = res.LoadFrame(main_frame, 'FRAME_Controls')
     if not frame:
-        print 'error loading FRAME_Controls'
+        print('error loading FRAME_Controls')
         return None
     frame.Fit()
     frame.Show()
@@ -150,7 +150,7 @@ def snap(evt):
     elif evt.GetId() == xrc.XRCID('snap_dialog'):
         WTF(app.frame_dialog, 'bitmaps/wxDialog.png')
     elif evt.GetId() == xrc.XRCID('snap_propsheetdialog'):
-        print 'sleeping 1 sec'
+        print('sleeping 1 sec')
         time.sleep(1)
         WTF(app.frame_propsheetdialog, 'bitmaps/wxPropertySheetDialog.png')
     elif evt.GetId() == xrc.XRCID('snap_menubar'):
@@ -164,7 +164,7 @@ if __name__ == '__main__':
     try: 
         resFile = sys.argv[1]
     except:
-        print 'usage: python maketools.py xrc_file'
+        print('usage: python maketools.py xrc_file')
         sys.exit(1)
     global app
     app = wx.PySimpleApp(useBestVisual=False)
