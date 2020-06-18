@@ -186,11 +186,13 @@ class ParamColour(PPanel):
 ################################################################################
 
 # Mapping from wx constants to XML strings
-fontFamiliesWx2Xml = {wx.DEFAULT: 'default', wx.DECORATIVE: 'decorative',
-                wx.ROMAN: 'roman', wx.SCRIPT: 'script', wx.SWISS: 'swiss',
-                wx.MODERN: 'modern'}
-fontStylesWx2Xml = {wx.NORMAL: 'normal', wx.SLANT: 'slant', wx.ITALIC: 'italic'}
-fontWeightsWx2Xml = {wx.NORMAL: 'normal', wx.LIGHT: 'light', wx.BOLD: 'bold'}
+fontFamiliesWx2Xml = {wx.FONTFAMILY_DEFAULT: 'default', wx.FONTFAMILY_DECORATIVE: 'decorative',
+                wx.FONTFAMILY_ROMAN: 'roman', wx.FONTFAMILY_SCRIPT: 'script',
+                wx.FONTFAMILY_SWISS: 'swiss', wx.FONTFAMILY_MODERN: 'modern'}
+fontStylesWx2Xml = {wx.FONTSTYLE_NORMAL: 'normal', wx.FONTSTYLE_SLANT: 'slant',
+                wx.FONTSTYLE_ITALIC: 'italic'}
+fontWeightsWx2Xml = {wx.FONTWEIGHT_NORMAL: 'normal', wx.FONTWEIGHT_LIGHT: 'light',
+                wx.FONTWEIGHT_BOLD: 'bold'}
 def ReverseMap(m):
     rm = {}
     for k,v in m.items(): rm[v] = k
@@ -237,17 +239,17 @@ class ParamFont(PPanel):
             try:                family = fontFamiliesXml2wx[d['family']]
             except KeyError:    error = True; wx.LogError('Invalid family specification')
         else:
-            family = wx.DEFAULT
+            family = wx.FONTFAMILY_DEFAULT
         if 'style' in d:
             try:                style = fontStylesXml2wx[d['style']]
             except KeyError:    error = True; wx.LogError('Invalid style specification')
         else:
-            style = wx.NORMAL
+            style = wx.FONTSTYLE_NORMAL
         if 'weight' in d:
             try:                weight = fontWeightsXml2wx[d['weight']]
             except KeyError:    error = True; wx.LogError('Invalid weight specification')
         else:
-            weight = wx.NORMAL
+            weight = wx.FONTWEIGHT_NORMAL
         try: underlined = bool(int(d.get('underlined', '0')))
         except ValueError: error = True; wx.LogError('Invalid underlined flag specification')
         face = d.get('face','')
@@ -542,9 +544,9 @@ class ContentHelpListDialog(wx.Dialog):
         # Set list items
         i = 0
         for v,t,h in value:
-            self.list.InsertStringItem(i, v)
-            self.list.SetStringItem(i, 1, t)
-            self.list.SetStringItem(i, 2, h)
+            self.list.InsertItem(i, v)
+            self.list.SetItem(i, 1, t)
+            self.list.SetItem(i, 2, h)
             i += 1
         self.SetAutoLayout(True)
         self.GetSizer().Fit(self)
@@ -567,17 +569,17 @@ class ContentHelpListDialog(wx.Dialog):
         i = self.list.GetNextItem(-1, state = wx.LIST_STATE_SELECTED)
         v, t, h  = self.list.GetItem(i, 0), self.list.GetItem(i, 1), self.list.GetItem(i, 2)
         self.list.DeleteItem(i)
-        i = self.list.InsertStringItem(i-1, v.GetText())
-        self.list.SetStringItem(i, 1, t.GetText())
-        self.list.SetStringItem(i, 2, h.GetText())
+        i = self.list.InsertItem(i-1, v.GetText())
+        self.list.SetItem(i, 1, t.GetText())
+        self.list.SetItem(i, 2, h.GetText())
         self.list.SetItemState(i, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
     def OnButtonDown(self, evt):
         i = self.list.GetNextItem(-1, state = wx.LIST_STATE_SELECTED)
         v, t, h  = self.list.GetItem(i, 0), self.list.GetItem(i, 1), self.list.GetItem(i, 2)
         self.list.DeleteItem(i)
-        i = self.list.InsertStringItem(i+1, v.GetText())
-        self.list.SetStringItem(i, 1, t.GetText())
-        self.list.SetStringItem(i, 2, h.GetText())
+        i = self.list.InsertItem(i+1, v.GetText())
+        self.list.SetItem(i, 1, t.GetText())
+        self.list.SetItem(i, 2, h.GetText())
         self.list.SetItemState(i, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
     def OnButtonAppend(self, evt):
         dlg = g.res.LoadDialog(self, 'DIALOG_HELPTEXT')
@@ -586,9 +588,9 @@ class ContentHelpListDialog(wx.Dialog):
         h = xrc.XRCCTRL(dlg, 'HELPTEXT')
         if dlg.ShowModal() == wx.ID_OK:
             i = self.list.GetItemCount()
-            self.list.InsertStringItem(i, v.GetValue())
-            self.list.SetStringItem(i, 1, t.GetValue())
-            self.list.SetStringItem(i, 2, h.GetValue())
+            self.list.InsertItem(i, v.GetValue())
+            self.list.SetItem(i, 1, t.GetValue())
+            self.list.SetItem(i, 2, h.GetValue())
         dlg.Destroy()
     def OnButtonEdit(self, evt):
         s = self.list.GetNextItem(-1, state = wx.LIST_STATE_SELECTED)
@@ -600,9 +602,9 @@ class ContentHelpListDialog(wx.Dialog):
         t.SetValue(self.list.GetItem(s, 1).GetText())
         h.SetValue(self.list.GetItem(s, 2).GetText())
         if dlg.ShowModal() == wx.ID_OK:
-            self.list.SetStringItem(s, 0, v.GetValue())
-            self.list.SetStringItem(s, 1, t.GetValue())
-            self.list.SetStringItem(s, 2, h.GetValue())
+            self.list.SetItem(s, 0, v.GetValue())
+            self.list.SetItem(s, 1, t.GetValue())
+            self.list.SetItem(s, 2, h.GetValue())
         dlg.Destroy()
     def OnButtonRemove(self, evt):
         self.list.DeleteItem(self.list.GetNextItem(-1, state = wx.LIST_STATE_SELECTED))

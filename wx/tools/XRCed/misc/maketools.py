@@ -107,14 +107,14 @@ def create_panels(main_frame):
             w.AppendItem(r, 'Item 2')
             w.Expand(r)
         elif klass == 'wxListCtrl':
-            w.InsertStringItem(0, "Item 1")
-            w.InsertStringItem(1, "Item 2")
-            w.InsertStringItem(2, "Item 3")
-            w.InsertStringItem(3, "Item 4")
-            w.InsertStringItem(4, "Item 5")
-            w.InsertStringItem(5, "Item 6")
-            w.InsertStringItem(6, "Item 7")
-            w.InsertStringItem(7, "Item 8")
+            w.InsertItem(0, "Item 1")
+            w.InsertItem(1, "Item 2")
+            w.InsertItem(2, "Item 3")
+            w.InsertItem(3, "Item 4")
+            w.InsertItem(4, "Item 5")
+            w.InsertItem(5, "Item 6")
+            w.InsertItem(6, "Item 7")
+            w.InsertItem(7, "Item 8")
         elif klass == 'wxGrid':
             w.CreateGrid(2,1)
             w.AutoSizeRows()
@@ -167,8 +167,8 @@ if __name__ == '__main__':
         print('usage: python maketools.py xrc_file')
         sys.exit(1)
     global app
-    app = wx.PySimpleApp(useBestVisual=False)
-    res = xrc.EmptyXmlResource()
+    app = wx.App(useBestVisual=False)
+    res = xrc.XmlResource()
     res.Load(resFile)
 
     # Main frame
