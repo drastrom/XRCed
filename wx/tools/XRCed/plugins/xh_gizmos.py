@@ -5,6 +5,7 @@
 # RCS-ID:       $Id$
 
 import wx
+import wx.xml as xml
 import wx.xrc as xrc
 import wx.adv as adv
 import wx.gizmos as gizmos
@@ -76,7 +77,7 @@ class EditableListBoxXmlHandler(xrc.XmlResourceHandler):
         n = self.GetParamNode('content')
         if n: n = n.GetChildren()
         while n:
-            if n.GetType() != xrc.XML_ELEMENT_NODE or n.GetName() != "item":
+            if n.GetType() != xml.XML_ELEMENT_NODE or n.GetName() != "item":
                 n = n.GetNext()
                 continue
             strings.append(n.GetNodeContent())
