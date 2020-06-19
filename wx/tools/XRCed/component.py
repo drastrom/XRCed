@@ -419,7 +419,6 @@ class Container(Component):
         # Copy child objects only for the same group
         dstComp = Manager.getNodeComp(dstNode)
         if self.groups[0] != dstComp.groups[0]: return
-        children = []
         for n in filter(is_object, srcNode.childNodes):
             n = self.getTreeNode(n)
             if dstComp.canHaveChild(Manager.getNodeComp(n)):

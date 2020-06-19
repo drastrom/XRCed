@@ -460,7 +460,7 @@ class ScrolledMessageDialog(wx.Dialog):
 
 ################################################################################
 
-class PrefsDialog(wx.adv.PropertySheetDialog): #(wx.PropertySheetDialog): !!! not wrapper yed - wrap by hand
+class PrefsDialog(wx.adv.PropertySheetDialog):
 
     def __init__(self, parent):
         wx.adv.PropertySheetDialog.__init__(self)
