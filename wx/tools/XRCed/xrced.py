@@ -20,13 +20,6 @@ options:
 import os
 from optparse import OptionParser
 from .globals import *
-from . import params
-from .presenter import Presenter
-from .listener import Listener
-from .component import Manager
-from . import view
-from . import undo
-from . import plugin
 
 # for helping to attach to the process with gdb...
 #print "%s\nPID: %d\n" % (wx.version(), os.getpid()); #raw_input("Press Enter...")
@@ -56,6 +49,13 @@ else:
 
 class App(AppBase):
     def OnInit(self):
+        from .presenter import Presenter
+        from .listener import Listener
+        from .component import Manager
+        from . import view
+        from . import undo
+        from . import plugin
+
         if USE_INSPECTOR:
             self.Init()
 
