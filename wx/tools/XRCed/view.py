@@ -348,6 +348,7 @@ class Frame(wx.Frame):
                              'Toggle auto-refresh mode')
             tb.ToggleTool(self.ID_AUTO_REFRESH, g.conf.autoRefresh)
         tb.Realize()
+        tb.Fit()
         self.minWidth = tb.GetSize()[0] # minimal width is the size of toolbar 
 
     def InitMiniFrameToolBar(self, tb):
