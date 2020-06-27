@@ -37,4 +37,4 @@ Component = component.SimpleComponent(
             'index': params.ParamInt,
             'pos': params.ParamPosSize, 
             'span': params.ParamPosSize})
-
+Component.attributes.remove("platform")

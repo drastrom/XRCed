@@ -120,6 +120,10 @@ class ParamBinaryOr(PPanel):
         Presenter.setApplied(False)
         evt.Skip()        
 
+class ParamPlatform(ParamBinaryOr):
+    '''Platform filter editing.'''
+    values = ['win', 'mac', 'unix', 'os2']
+
 class ParamFlag(ParamBinaryOr):
     '''Sizer flag editing.'''
     values = ['wxTOP', 'wxBOTTOM', 'wxLEFT', 'wxRIGHT', 'wxALL',
@@ -989,7 +993,7 @@ paramDict = {
     'tooltip': ParamLongText, 
     # other
     'bitmap': ParamBitmap, 'icon': ParamBitmap,
-    'comment': ParamComment,
+    'comment': ParamComment, 'platform': ParamPlatform,
     'wrap': ParamInt,
     }
 '''Default classes for standard attributes.'''

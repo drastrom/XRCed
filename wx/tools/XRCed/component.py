@@ -143,6 +143,7 @@ class Component(object):
         self.klass = klass
         self.groups = groups
         self.attributes = attributes
+        self.attributes.append("platform")
         self.styles = []
         self.exStyles = []
         self.defaults = kargs.pop('defaults', {})
@@ -151,6 +152,7 @@ class Component(object):
         # Some default special attributes
         self.specials['font'] = FontAttribute
         self.specials['XRCED'] = CodeAttribute
+        self.specials['platform'] = AttributeAttribute
         # Special Param classes if required
         self.params = kargs.pop('params', {})
         # Tree image
