@@ -4,6 +4,7 @@
 # Created:      02.12.2002
 # RCS-ID:       $Id$
 
+from __future__ import print_function
 import os,sys
 import wx
 import wx.xrc as xrc
@@ -75,7 +76,7 @@ def get_verbose():
     return _verbose
 
 def TRACE(msg, *args):
-    if _debug and _verbose: print >> sys.stderr, 'TRACE: ' + (msg % args)
+    if _debug and _verbose: print('TRACE: ' + (msg % args), file=sys.stderr)
 
 class Globals:
     undoMan = None

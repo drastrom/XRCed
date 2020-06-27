@@ -4,6 +4,7 @@
 # Created:      07.06.2007
 # RCS-ID:       $Id$
 
+from __future__ import print_function
 import os
 import wx
 from wx import xrc
@@ -93,7 +94,7 @@ class Frame(wx.Frame):
         self.htmlCtrl = wx.html.HtmlHelpController()
         programPath = os.path.dirname(__file__)
         if not (self.htmlCtrl.AddBook(os.path.join(programPath, "xrced.htb"))) :
-            print >> sys.stderr, "Cannot load help file \"xrced.htb\""
+            print("Cannot load help file \"xrced.htb\"", file=sys.stderr)
             self.GetMenuBar().Enable(wx.ID_HELP_CONTENTS, False)        
 
         # Create toolbar
