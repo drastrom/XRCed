@@ -504,7 +504,7 @@ component.Manager.setMenu(c, 'box', 'owner-drawn combo box', 'wxOwnerDrawnComboB
 
 c = component.Component('wxRadioBox', ['control','tool'],
               ['pos', 'size', 'label', 'dimension', 
-               'content', 'selection', 'dimension'])
+               'content', 'selection'])
 c.addStyles('wxRA_SPECIFY_ROWS', 'wxRA_SPECIFY_COLS', 'wxRA_HORIZONTAL',
             'wxRA_VERTICAL')
 c.setSpecial('content',  attribute.HelpContentAttribute)
